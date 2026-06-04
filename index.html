@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio – Nguyễn Đức Ninh | UET-IS</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f14;
+    --bg2: #13161e;
+    --bg3: #1a1e2a;
+    --card: #1e2233;
+    --border: rgba(255,255,255,0.08);
+    --accent: #4f8ef7;
+    --accent2: #7c5cfc;
+    --accent3: #00d4aa;
+    --text: #e8eaf0;
+    --muted: #8892a4;
+    --tag: #252b3d;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 16px;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(13,15,20,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 60px;
+  }
+  .nav-logo { font-weight: 700; font-size: 1.1rem; letter-spacing: -0.02em; color: var(--text); text-decoration: none; }
+  .nav-logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--text); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(79,142,247,0.12) 0%, transparent 70%),
+                radial-gradient(ellipse 60% 50% at 20% 80%, rgba(124,92,252,0.08) 0%, transparent 60%);
+  }
+  .hero-content { position: relative; max-width: 700px; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--tag); border: 1px solid var(--border);
+    border-radius: 100px; padding: 6px 16px;
+    font-size: 0.8rem; color: var(--muted);
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.6s ease both;
+  }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent3); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.4} }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 7vw, 4.5rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+  .hero h1 em { font-style: italic; color: var(--accent); }
+  .hero-sub {
+    font-size: 1rem; color: var(--muted); margin: 1rem 0 2rem;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+  .hero-tags {
+    display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+    margin-bottom: 2.5rem;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+  .tag {
+    background: var(--tag); border: 1px solid var(--border);
+    border-radius: 6px; padding: 5px 14px;
+    font-size: 0.82rem; color: var(--muted);
+  }
+  .hero-cta {
+    display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+  .btn {
+    padding: 12px 28px; border-radius: 10px; font-size: 0.95rem;
+    font-family: 'Be Vietnam Pro', sans-serif; font-weight: 500;
+    cursor: pointer; text-decoration: none; transition: all 0.2s; display: inline-block;
+  }
+  .btn-primary { background: var(--accent); color: #fff; border: none; }
+  .btn-primary:hover { background: #3a7aed; transform: translateY(-1px); }
+  .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border); }
+  .btn-ghost:hover { border-color: rgba(255,255,255,0.2); background: var(--bg3); }
+
+  @keyframes fadeUp { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform:none; } }
+
+  /* SECTIONS */
+  section { padding: 5rem 2rem; }
+  .container { max-width: 900px; margin: 0 auto; }
+  .section-label {
+    font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent); font-weight: 600; margin-bottom: 0.5rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    line-height: 1.2; margin-bottom: 1rem;
+  }
+  .section-desc { color: var(--muted); max-width: 560px; margin-bottom: 3rem; }
+
+  /* ABOUT */
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
+  }
+  @media (max-width: 640px) { .about-grid { grid-template-columns: 1fr; } }
+  .about-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 1.5rem;
+  }
+  .about-card h4 { font-size: 0.85rem; color: var(--muted); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.08em; }
+  .about-card p { font-size: 1rem; }
+  .about-card .big { font-size: 1.4rem; font-weight: 600; color: var(--text); }
+
+  /* BÀI TẬP CARDS */
+  .bai-grid { display: grid; gap: 1.5rem; }
+  .bai-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 2rem;
+    transition: border-color 0.2s, transform 0.2s;
+    cursor: pointer;
+  }
+  .bai-card:hover { border-color: rgba(79,142,247,0.3); transform: translateY(-2px); }
+  .bai-header { display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1rem; }
+  .bai-num {
+    min-width: 44px; height: 44px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 1rem;
+    background: linear-gradient(135deg, rgba(79,142,247,0.2), rgba(124,92,252,0.2));
+    border: 1px solid rgba(79,142,247,0.25);
+    color: var(--accent);
+  }
+  .bai-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.25rem; }
+  .bai-subtitle { font-size: 0.85rem; color: var(--accent3); }
+  .bai-body { color: var(--muted); font-size: 0.95rem; margin-bottom: 1.2rem; }
+  .bai-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .bai-tag {
+    background: rgba(79,142,247,0.1); color: var(--accent);
+    border: 1px solid rgba(79,142,247,0.2);
+    border-radius: 6px; padding: 3px 10px; font-size: 0.78rem;
+  }
+
+  /* DETAIL SECTIONS */
+  .bai-detail {
+    display: none;
+    margin-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    padding-top: 1.5rem;
+  }
+  .bai-card.open .bai-detail { display: block; }
+  .bai-card.open { border-color: rgba(79,142,247,0.4); }
+  .toggle-btn {
+    background: none; border: none; color: var(--muted); cursor: pointer;
+    font-size: 0.85rem; font-family: inherit; display: flex; align-items: center; gap: 6px;
+    margin-top: 1rem; padding: 0; transition: color 0.2s;
+  }
+  .toggle-btn:hover { color: var(--text); }
+  .toggle-icon { transition: transform 0.25s; display: inline-block; }
+  .bai-card.open .toggle-icon { transform: rotate(180deg); }
+
+  table.detail-table {
+    width: 100%; border-collapse: collapse; font-size: 0.88rem;
+    margin: 1rem 0;
+  }
+  .detail-table th {
+    background: rgba(79,142,247,0.1); color: var(--accent);
+    padding: 10px 14px; text-align: left;
+    border-bottom: 1px solid var(--border); font-weight: 600;
+  }
+  .detail-table td {
+    padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--muted);
+    vertical-align: top;
+  }
+  .detail-table tr:last-child td { border-bottom: none; }
+  .detail-table tr:hover td { background: rgba(255,255,255,0.02); color: var(--text); }
+
+  ul.detail-list { list-style: none; padding: 0; }
+  ul.detail-list li {
+    padding: 8px 0; border-bottom: 1px solid var(--border);
+    color: var(--muted); font-size: 0.92rem; display: flex; gap: 10px; align-items: flex-start;
+  }
+  ul.detail-list li:last-child { border-bottom: none; }
+  ul.detail-list li::before { content: '→'; color: var(--accent); flex-shrink: 0; margin-top: 1px; }
+
+  .highlight-box {
+    background: rgba(0,212,170,0.07); border: 1px solid rgba(0,212,170,0.2);
+    border-radius: 10px; padding: 1rem 1.2rem; margin: 1rem 0;
+    font-size: 0.92rem; color: var(--text);
+  }
+
+  /* PRINCIPLES SECTION */
+  .principles-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
+  .principle-card {
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 14px; padding: 1.25rem;
+  }
+  .p-num { font-size: 2rem; font-weight: 700; color: rgba(79,142,247,0.25); line-height: 1; margin-bottom: 0.5rem; }
+  .p-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.4rem; }
+  .p-desc { font-size: 0.85rem; color: var(--muted); }
+
+  /* FOOTER */
+  footer {
+    background: var(--bg2); border-top: 1px solid var(--border);
+    padding: 2.5rem 2rem; text-align: center;
+  }
+  footer p { color: var(--muted); font-size: 0.88rem; }
+  footer a { color: var(--accent); text-decoration: none; }
+
+  /* SCROLL REVEAL */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#"><span>N</span>guyễn Đức Ninh</a>
+  <ul class="nav-links">
+    <li><a href="#about">Giới thiệu</a></li>
+    <li><a href="#baitap">Bài tập</a></li>
+    <li><a href="#principles">Nguyên tắc</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge"><span class="dot"></span> Portfolio Kỹ Thuật Số – UET 2024</div>
+    <h1>Nguyễn <em>Đức Ninh</em></h1>
+    <p class="hero-sub">Sinh viên năm 1 · Hệ thống thông tin (IS) · Đại học Công nghệ – ĐHQGHN</p>
+    <div class="hero-tags">
+      <span class="tag">Quản lý dữ liệu</span>
+      <span class="tag">Prompt Engineering</span>
+      <span class="tag">AI có trách nhiệm</span>
+      <span class="tag">Cộng tác số</span>
+      <span class="tag">Tư duy phản biện</span>
+    </div>
+    <div class="hero-cta">
+      <a href="#baitap" class="btn btn-primary">Xem Portfolio →</a>
+      <a href="#about" class="btn btn-ghost">Giới thiệu bản thân</a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" style="background: var(--bg2);">
+  <div class="container">
+    <p class="section-label">Về tôi</p>
+    <h2 class="section-title">Bước đầu hành trình số</h2>
+    <p class="section-desc">Portfolio này ghi lại quá trình học tập và thực hành kỹ năng số của tôi trong môn Nhập môn Công nghệ số và Ứng dụng.</p>
+
+    <div class="about-grid reveal">
+      <div class="about-card">
+        <h4>Trường</h4>
+        <p class="big">UET – ĐHQGHN</p>
+        <p style="color: var(--muted); font-size: 0.88rem; margin-top: 4px;">Đại học Công nghệ – Đại học Quốc gia Hà Nội</p>
+      </div>
+      <div class="about-card">
+        <h4>Ngành học</h4>
+        <p class="big">Hệ thống thông tin</p>
+        <p style="color: var(--muted); font-size: 0.88rem; margin-top: 4px;">Information Systems (IS) · Năm học 2024-2025</p>
+      </div>
+      <div class="about-card">
+        <h4>Mục tiêu học tập</h4>
+        <p style="font-size: 0.95rem; color: var(--muted);">Nắm vững kỹ năng số thiết yếu, sử dụng AI có trách nhiệm và xây dựng tư duy hệ thống phục vụ sự nghiệp trong ngành CNTT.</p>
+      </div>
+      <div class="about-card">
+        <h4>Kỹ năng đạt được</h4>
+        <p style="font-size: 0.95rem; color: var(--muted);">Tổ chức dữ liệu · Tìm kiếm thông tin · Prompt Engineering · Cộng tác số · Sử dụng AI tạo sinh</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BÀI TẬP -->
+<section id="baitap">
+  <div class="container">
+    <p class="section-label">Các bài tập</p>
+    <h2 class="section-title">6 Kỹ năng cốt lõi</h2>
+    <p class="section-desc">Mỗi bài tập là một trải nghiệm học tập thực tế, giúp xây dựng nền tảng kỹ năng số vững chắc.</p>
+
+    <div class="bai-grid">
+
+      <!-- BÀI 1 -->
+      <div class="bai-card reveal" onclick="toggleCard(this)">
+        <div class="bai-header">
+          <div class="bai-num">01</div>
+          <div>
+            <div class="bai-title">Tác cơ bản với Tệp tin và Thư mục</div>
+            <div class="bai-subtitle">Tổ chức dữ liệu học tập khoa học</div>
+          </div>
+        </div>
+        <p class="bai-body">Xây dựng cấu trúc thư mục hệ thống cho toàn bộ môn học, áp dụng quy tắc đặt tên nhất quán và sao lưu lên Google Drive.</p>
+        <div class="bai-tags">
+          <span class="bai-tag">Quản lý tệp tin</span>
+          <span class="bai-tag">Windows / Google Drive</span>
+          <span class="bai-tag">Tổ chức dữ liệu</span>
+        </div>
+        <button class="toggle-btn">Chi tiết <span class="toggle-icon">▾</span></button>
+        <div class="bai-detail">
+          <p style="color:var(--muted); font-size:0.92rem; margin-bottom:1rem;">Cấu trúc thư mục chính đã xây dựng:</p>
+          <ul class="detail-list">
+            <li>NhapMonCNS/ → Bai1_TepTinThuMuc/ → tài liệu và bài tập</li>
+            <li>Quy tắc đặt tên: YYYYMMDD_TenFile_v1 (không dấu cách)</li>
+            <li>Tổng: 8 thư mục chính, 15+ thư mục con, 40+ tệp tin</li>
+            <li>Sao lưu tự động: Google Drive + OneDrive (dual backup)</li>
+          </ul>
+          <div class="highlight-box">💡 Bài học: Tổ chức thư mục ngay từ đầu tiết kiệm hàng giờ tìm kiếm về sau. Đây là nền tảng của mọi dự án CNTT.</div>
+        </div>
+      </div>
+
+      <!-- BÀI 2 -->
+      <div class="bai-card reveal" onclick="toggleCard(this)">
+        <div class="bai-header">
+          <div class="bai-num">02</div>
+          <div>
+            <div class="bai-title">Tìm kiếm và Đánh giá Thông tin Kỹ thuật</div>
+            <div class="bai-subtitle">So sánh Windows 11 vs Linux (Ubuntu 22.04)</div>
+          </div>
+        </div>
+        <p class="bai-body">Thực hành đánh giá độ tin cậy nguồn thông tin, tổng hợp từ nhiều nguồn khác nhau và so sánh hệ điều hành theo 6 tiêu chí.</p>
+        <div class="bai-tags">
+          <span class="bai-tag">Tư duy phản biện</span>
+          <span class="bai-tag">Google Scholar</span>
+          <span class="bai-tag">Đánh giá nguồn</span>
+        </div>
+        <button class="toggle-btn">Chi tiết <span class="toggle-icon">▾</span></button>
+        <div class="bai-detail">
+          <table class="detail-table">
+            <tr><th>Tiêu chí</th><th>Windows 11</th><th>Linux Ubuntu</th></tr>
+            <tr><td>Chi phí</td><td>Có phí (~4-5 triệu)</td><td>Miễn phí</td></tr>
+            <tr><td>Giao diện</td><td>Thân thiện, phổ biến</td><td>Linh hoạt, tùy biến</td></tr>
+            <tr><td>Bảo mật</td><td>Tốt, bản vá thường xuyên</td><td>Rất tốt, ít virus</td></tr>
+            <tr><td>Lập trình</td><td>Hỗ trợ tốt, nhiều IDE</td><td>Mạnh hơn cho dev</td></tr>
+          </table>
+          <div class="highlight-box">💡 Kết luận: Không có hệ điều hành nào tốt tuyệt đối. Sinh viên IS nên học cả 2: Windows cho môi trường văn phòng, Linux cho quản trị server.</div>
+        </div>
+      </div>
+
+      <!-- BÀI 3 -->
+      <div class="bai-card reveal" onclick="toggleCard(this)">
+        <div class="bai-header">
+          <div class="bai-num">03</div>
+          <div>
+            <div class="bai-title">Viết Prompt Hiệu quả</div>
+            <div class="bai-subtitle">Kỹ thuật Prompt Engineering cơ bản</div>
+          </div>
+        </div>
+        <p class="bai-body">So sánh chất lượng kết quả giữa prompt đơn giản và prompt được thiết kế kỹ lưỡng với đủ bối cảnh, nhiệm vụ và định dạng đầu ra.</p>
+        <div class="bai-tags">
+          <span class="bai-tag">Prompt Engineering</span>
+          <span class="bai-tag">ChatGPT / Claude</span>
+          <span class="bai-tag">AI Generative</span>
+        </div>
+        <button class="toggle-btn">Chi tiết <span class="toggle-icon">▾</span></button>
+        <div class="bai-detail">
+          <p style="color:var(--muted); font-size:0.9rem; margin-bottom: 0.8rem;">Công thức prompt hiệu quả:</p>
+          <ul class="detail-list">
+            <li><strong style="color:var(--text)">Bối cảnh:</strong> "Bạn là giảng viên CNTT..."</li>
+            <li><strong style="color:var(--text)">Nhiệm vụ cụ thể:</strong> "Giải thích khái niệm X cho sinh viên năm 1"</li>
+            <li><strong style="color:var(--text)">Định dạng:</strong> "Trình bày trong 150 từ, dùng ví dụ thực tế"</li>
+            <li><strong style="color:var(--text)">Kết quả:</strong> Chất lượng tăng 70-80% so với prompt đơn giản</li>
+          </ul>
+          <div class="highlight-box">💡 Giao tiếp chính xác với hệ thống (AI hay con người) là kỹ năng cốt lõi của ngành IS.</div>
+        </div>
+      </div>
+
+      <!-- BÀI 4 -->
+      <div class="bai-card reveal" onclick="toggleCard(this)">
+        <div class="bai-header">
+          <div class="bai-num">04</div>
+          <div>
+            <div class="bai-title">Hợp tác Trực tuyến cho Dự án Nhóm</div>
+            <div class="bai-subtitle">Phân tích hệ thống quản lý thư viện (4 thành viên)</div>
+          </div>
+        </div>
+        <p class="bai-body">Sử dụng Google Docs, Notion, Google Meet và Zalo để hoàn thành dự án nhóm trong 10 ngày theo quy trình 4 giai đoạn.</p>
+        <div class="bai-tags">
+          <span class="bai-tag">Google Workspace</span>
+          <span class="bai-tag">Notion</span>
+          <span class="bai-tag">Làm việc nhóm</span>
+        </div>
+        <button class="toggle-btn">Chi tiết <span class="toggle-icon">▾</span></button>
+        <div class="bai-detail">
+          <table class="detail-table">
+            <tr><th>Giai đoạn</th><th>Công cụ</th><th>Kết quả</th></tr>
+            <tr><td>Lên kế hoạch (ngày 1-2)</td><td>Google Meet + Notion</td><td>Phân công rõ ràng</td></tr>
+            <tr><td>Thực hiện (ngày 3-7)</td><td>Google Docs</td><td>Cộng tác real-time</td></tr>
+            <tr><td>Tổng hợp (ngày 8-9)</td><td>Google Docs</td><td>Bản nháp hoàn chỉnh</td></tr>
+            <tr><td>Hoàn thiện (ngày 10)</td><td>Drive + PDF</td><td>Nộp bài đúng hạn</td></tr>
+          </table>
+          <div class="highlight-box">💡 Công nghệ chỉ là công cụ – quan trọng hơn là thái độ chủ động và giao tiếp rõ ràng trong nhóm.</div>
+        </div>
+      </div>
+
+      <!-- BÀI 5 -->
+      <div class="bai-card reveal" onclick="toggleCard(this)">
+        <div class="bai-header">
+          <div class="bai-num">05</div>
+          <div>
+            <div class="bai-title">Sử dụng AI Tạo sinh để Hỗ trợ Tạo nội dung</div>
+            <div class="bai-subtitle">Thực hành với ChatGPT, Canva AI, Gamma.app</div>
+          </div>
+        </div>
+        <p class="bai-body">Tạo bài viết giới thiệu ngành IS, thiết kế đồ họa và slide thuyết trình với sự hỗ trợ của các công cụ AI tạo sinh.</p>
+        <div class="bai-tags">
+          <span class="bai-tag">ChatGPT</span>
+          <span class="bai-tag">Canva AI</span>
+          <span class="bai-tag">Gamma.app</span>
+          <span class="bai-tag">GitHub Copilot</span>
+        </div>
+        <button class="toggle-btn">Chi tiết <span class="toggle-icon">▾</span></button>
+        <div class="bai-detail">
+          <p style="color:var(--muted); font-size:0.9rem; margin-bottom:0.8rem;">Đánh giá chất lượng sản phẩm AI:</p>
+          <ul class="detail-list">
+            <li>Tốc độ: Tạo bản nháp &lt;2 phút (nhanh hơn 3-4 lần viết tay)</li>
+            <li>Ngữ pháp: Chính xác, nhưng đôi khi dài dòng</li>
+            <li>Điểm yếu: Thiếu thông tin địa phương và góc nhìn cá nhân</li>
+            <li>Quy trình tối ưu: AI tạo 70% + người chỉnh 30% = sản phẩm chất lượng</li>
+          </ul>
+          <div class="highlight-box">💡 AI là công cụ hỗ trợ mạnh mẽ, nhưng vai trò định hướng và kiểm chứng vẫn thuộc về con người.</div>
+        </div>
+      </div>
+
+      <!-- BÀI 6 -->
+      <div class="bai-card reveal" onclick="toggleCard(this)">
+        <div class="bai-header">
+          <div class="bai-num">06</div>
+          <div>
+            <div class="bai-title">AI có Trách nhiệm trong Học tập và Nghiên cứu</div>
+            <div class="bai-subtitle">Xây dựng nguyên tắc sử dụng AI cá nhân</div>
+          </div>
+        </div>
+        <p class="bai-body">Phân tích 5 tình huống thực tế về sử dụng AI đúng/sai trong học thuật và đề xuất bộ nguyên tắc sử dụng AI có đạo đức.</p>
+        <div class="bai-tags">
+          <span class="bai-tag">Đạo đức AI</span>
+          <span class="bai-tag">Học thuật trung thực</span>
+          <span class="bai-tag">Critical Thinking</span>
+        </div>
+        <button class="toggle-btn">Chi tiết <span class="toggle-icon">▾</span></button>
+        <div class="bai-detail">
+          <table class="detail-table">
+            <tr><th>Tình huống</th><th>Đánh giá</th></tr>
+            <tr><td>Dùng AI giải thích khái niệm, tự làm bài tập</td><td style="color:#00d4aa">✅ Tốt</td></tr>
+            <tr><td>Nộp bài luận AI viết hoàn toàn không chỉnh sửa</td><td style="color:#f07878">❌ Sai – Gian lận học thuật</td></tr>
+            <tr><td>Dùng AI kiểm tra lỗi ngữ pháp tiếng Anh</td><td style="color:#00d4aa">✅ Tốt</td></tr>
+            <tr><td>Nhập đề thi vào AI trong giờ kiểm tra</td><td style="color:#f07878">❌ Sai – Vi phạm quy chế</td></tr>
+            <tr><td>Dùng AI brainstorm, tự tìm tài liệu xác minh</td><td style="color:#00d4aa">✅ Tốt</td></tr>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PRINCIPLES -->
+<section id="principles" style="background: var(--bg2);">
+  <div class="container">
+    <p class="section-label">Nguyên tắc cá nhân</p>
+    <h2 class="section-title">5 Nguyên tắc sử dụng AI</h2>
+    <p class="section-desc">Những nguyên tắc tôi cam kết tuân thủ trong suốt quá trình học tập và làm việc.</p>
+
+    <div class="principles-grid">
+      <div class="principle-card reveal">
+        <div class="p-num">01</div>
+        <div class="p-title">Hiểu trước, dùng sau</div>
+        <div class="p-desc">Luôn cố gắng hiểu vấn đề trước khi hỏi AI. AI là bước hỗ trợ, không phải bước đầu tiên.</div>
+      </div>
+      <div class="principle-card reveal">
+        <div class="p-num">02</div>
+        <div class="p-title">Kiểm chứng mọi thứ</div>
+        <div class="p-desc">Không tin tuyệt đối vào AI. Luôn cross-check với tài liệu gốc, đặc biệt số liệu và sự kiện.</div>
+      </div>
+      <div class="principle-card reveal">
+        <div class="p-num">03</div>
+        <div class="p-title">Minh bạch và trung thực</div>
+        <div class="p-desc">Khai báo rõ ràng khi có sử dụng AI hỗ trợ trong bài tập và báo cáo học thuật.</div>
+      </div>
+      <div class="principle-card reveal">
+        <div class="p-num">04</div>
+        <div class="p-title">AI là công cụ, không phải tư duy</div>
+        <div class="p-desc">Trách nhiệm của sản phẩm cuối vẫn là của mình. Không đổ lỗi hay ỷ lại hoàn toàn vào AI.</div>
+      </div>
+      <div class="principle-card reveal">
+        <div class="p-num">05</div>
+        <div class="p-title">Liên tục cập nhật</div>
+        <div class="p-desc">Công nghệ AI thay đổi rất nhanh. Không ngừng học hỏi về cả khả năng lẫn giới hạn của AI.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Portfolio Kỹ Thuật Số · <strong style="color:var(--text)">Nguyễn Đức Ninh</strong> · Hệ thống thông tin · UET-ĐHQGHN · 2024</p>
+  <p style="margin-top:8px;">Môn học: Nhập môn Công nghệ số và Ứng dụng</p>
+</footer>
+
+<script>
+function toggleCard(card) {
+  card.classList.toggle('open');
+}
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
