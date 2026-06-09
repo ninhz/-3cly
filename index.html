@@ -937,7 +937,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc, collection, addDoc, getDocs, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
-import { getStorage, ref, uploadString, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-storage.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBKRsdMHS90BzJYFWNT11-QFy2g2PsrCrs",
@@ -951,7 +950,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-const storage = getStorage(app);
 
 let uid = null;
 let mapInstance = null;
@@ -1042,20 +1040,28 @@ window.uploadAvatar=async(input)=>{
   const file=input.files[0]; if(!file)return;
   const reader=new FileReader();
   reader.onload=async(e)=>{
-    const dataUrl=e.target.result;
-    try{
-      const storageRef=ref(storage,`avatars/${uid}`);
-      await uploadString(storageRef,dataUrl,'data_url');
-      const url=await getDownloadURL(storageRef);
-      document.getElementById('avatar-img').src=url;
-      document.getElementById('avatar-img').style.display='block';
-      document.getElementById('avatar-placeholder').style.display='none';
-      await setDoc(uref('meta','main'),{avatarUrl:url},{merge:true});
-    }catch(e){
+    // Resize ảnh xuống 200x200 bằng canvas trước khi lưu
+    const img=new Image();
+    img.onload=async()=>{
+      const canvas=document.createElement('canvas');
+      const size=200;
+      canvas.width=size;canvas.height=size;
+      const ctx=canvas.getContext('2d');
+      // crop center
+      const s=Math.min(img.width,img.height);
+      const sx=(img.width-s)/2,sy=(img.height-s)/2;
+      ctx.drawImage(img,sx,sy,s,s,0,0,size,size);
+      const dataUrl=canvas.toDataURL('image/jpeg',0.8);
+      // Hiện ảnh ngay
       document.getElementById('avatar-img').src=dataUrl;
       document.getElementById('avatar-img').style.display='block';
       document.getElementById('avatar-placeholder').style.display='none';
-    }
+      // Lưu vào Firestore (không cần Storage)
+      try{
+        await setDoc(uref('meta','main'),{avatarUrl:dataUrl},{merge:true});
+      }catch(err){console.log('Lưu avatar lỗi:',err);}
+    };
+    img.src=e.target.result;
   };
   reader.readAsDataURL(file);
 };
