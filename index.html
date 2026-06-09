@@ -978,6 +978,23 @@
 .theme-opt:hover > div:first-child { border-color:rgba(255,255,255,.5)!important;transform:scale(1.03); }
 .theme-opt.active > div:first-child { border-color:#fff!important;box-shadow:0 0 0 2px rgba(255,255,255,.3); }
 .theme-label { font-size:10px;color:rgba(255,255,255,.55);text-align:center;margin-top:5px;font-weight:600; }
+/* Map hồng */
+.map-tiles { filter: hue-rotate(300deg) saturate(0.5) brightness(0.85) !important; }
+.leaflet-container { background:#1a0a14 !important; }
+.leaflet-popup-content-wrapper {
+  background:rgba(30,10,20,0.95) !important;
+  border:1px solid rgba(232,121,154,0.3) !important;
+  border-radius:14px !important;
+  color:#fff !important;
+  box-shadow:0 8px 32px rgba(0,0,0,0.5) !important;
+}
+.leaflet-popup-tip { background:rgba(30,10,20,0.95) !important; }
+.leaflet-control-zoom a {
+  background:rgba(30,10,20,0.9) !important;
+  border:1px solid rgba(232,121,154,0.3) !important;
+  color:rgba(255,255,255,0.8) !important;
+}
+.leaflet-control-zoom a:hover { background:rgba(232,121,154,0.2) !important; color:#fff !important; }
 </style>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
@@ -1344,9 +1361,9 @@ function initMap(){
   if(mapInstance)return;
   mapInstance=L.map('map',{zoomControl:false}).setView([21.028,105.834],12);
 
-  // Dark tile từ CartoDB
+  // Dark tile với hue hồng
   L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{
-    attribution:'© CartoDB',maxZoom:19
+    attribution:'© CartoDB',maxZoom:19,className:'map-tiles'
   }).addTo(mapInstance);
 
   // Zoom control góc phải dưới
