@@ -1,9 +1,642 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
-    <!-- Tự động đá sang trang inLove.html ngay lập tức -->
-    <meta http-equiv="refresh" content="0; url=inLove.html">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💌 inLove</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0d0d;
+    --surface: #1a1618;
+    --surface2: #221e20;
+    --border: #2e2829;
+    --accent: #e8a4b0;
+    --accent2: #c97d8a;
+    --accent3: #f5cdd4;
+    --text: #f0e8ea;
+    --text2: #b09898;
+    --text3: #7a6060;
+    --red: #c96b7a;
+    --green: #8bbfaa;
+    --yellow: #e8d4a4;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse at 20% 20%, rgba(232,164,176,0.04) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 80%, rgba(201,125,138,0.03) 0%, transparent 60%);
+  }
+
+  /* AUTH SCREEN */
+  #auth-screen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .auth-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 48px 40px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+  }
+  .auth-box h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 400;
+    margin-bottom: 8px;
+  }
+  .auth-box h1 span { font-style: italic; color: var(--accent); }
+  .auth-box p { color: var(--text3); font-size: 13px; margin-bottom: 32px; }
+  .auth-tabs { display: flex; gap: 0; margin-bottom: 28px; background: var(--surface2); border-radius: 10px; padding: 4px; }
+  .auth-tab {
+    flex: 1; background: none; border: none; color: var(--text3);
+    font-family: 'DM Sans', sans-serif; font-size: 13px; padding: 8px;
+    cursor: pointer; border-radius: 7px; transition: all 0.2s;
+  }
+  .auth-tab.active { background: var(--surface); color: var(--text); }
+  .auth-field { margin-bottom: 14px; text-align: left; }
+  .auth-field label { font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase; color: var(--text3); display: block; margin-bottom: 6px; }
+  .auth-field input {
+    width: 100%; background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 10px; color: var(--text); font-family: 'DM Sans', sans-serif;
+    font-size: 14px; padding: 12px 16px; transition: border-color 0.2s;
+  }
+  .auth-field input:focus { outline: none; border-color: var(--accent2); }
+  .auth-btn {
+    width: 100%; background: var(--accent2); border: none; border-radius: 10px;
+    color: #fff; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
+    padding: 14px; cursor: pointer; transition: background 0.2s; margin-top: 8px;
+  }
+  .auth-btn:hover { background: var(--red); }
+  .auth-error { color: #e88; font-size: 12px; margin-top: 10px; min-height: 18px; }
+
+  /* APP */
+  #app-screen { display: none; }
+  header {
+    padding: 32px 40px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: flex-end; justify-content: space-between; gap: 24px;
+  }
+  .header-left h1 {
+    font-family: 'Playfair Display', serif; font-size: 38px; font-weight: 400;
+    letter-spacing: -0.5px; line-height: 1; outline: none; cursor: text;
+  }
+  .header-left h1 span { font-style: italic; color: var(--accent); }
+  .header-left p { margin-top: 6px; color: var(--text3); font-size: 13px; outline: none; cursor: text; }
+  .header-right { display: flex; align-items: center; gap: 12px; }
+  .anniversary-badge {
+    background: var(--surface2); border: 1px solid var(--border); border-radius: 12px;
+    padding: 14px 20px; text-align: right; cursor: pointer; transition: border-color 0.2s; min-width: 180px;
+  }
+  .anniversary-badge:hover { border-color: var(--accent2); }
+  .anniversary-badge .days { font-family: 'Playfair Display', serif; font-size: 32px; color: var(--accent); line-height: 1; }
+  .anniversary-badge .label { font-size: 10px; color: var(--text3); letter-spacing: 1px; text-transform: uppercase; margin-top: 4px; }
+  .anniversary-badge .date-input {
+    background: none; border: none; color: var(--text2); font-size: 12px;
+    font-family: 'DM Sans', sans-serif; text-align: right; cursor: pointer; width: 100%; margin-top: 4px;
+  }
+  .anniversary-badge .date-input:focus { outline: none; color: var(--accent); }
+  .logout-btn {
+    background: none; border: 1px solid var(--border); border-radius: 8px;
+    color: var(--text3); font-family: 'DM Sans', sans-serif; font-size: 12px;
+    padding: 8px 14px; cursor: pointer; transition: all 0.2s;
+  }
+  .logout-btn:hover { border-color: var(--red); color: var(--red); }
+
+  nav {
+    display: flex; gap: 4px; padding: 16px 40px 0;
+    border-bottom: 1px solid var(--border); overflow-x: auto;
+  }
+  .nav-btn {
+    background: none; border: none; color: var(--text3); font-family: 'DM Sans', sans-serif;
+    font-size: 13px; padding: 10px 18px; cursor: pointer; border-bottom: 2px solid transparent;
+    transition: all 0.2s; letter-spacing: 0.3px; margin-bottom: -1px; white-space: nowrap;
+  }
+  .nav-btn:hover { color: var(--text2); }
+  .nav-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  main { max-width: 900px; margin: 0 auto; padding: 36px 40px; }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 400; }
+  .section-title small { font-family: 'DM Sans', sans-serif; font-size: 12px; color: var(--text3); font-weight: 300; margin-left: 10px; }
+
+  .add-form { display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap; }
+  .add-form input, .add-form select {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+    color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px;
+    padding: 11px 16px; transition: border-color 0.2s; font-weight: 300;
+  }
+  .add-form input:focus, .add-form select:focus { outline: none; border-color: var(--accent2); }
+  .add-form input { flex: 1; min-width: 200px; }
+  .add-form select { background: var(--surface); color: var(--text2); cursor: pointer; }
+  .add-form select option { background: var(--surface2); }
+  .btn-add {
+    background: var(--accent2); border: none; border-radius: 10px; color: #fff;
+    font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+    padding: 11px 22px; cursor: pointer; transition: background 0.2s; white-space: nowrap;
+  }
+  .btn-add:hover { background: var(--red); }
+
+  .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 10px; margin-bottom: 32px; }
+  .card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    padding: 14px 16px; display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 10px; transition: border-color 0.2s; animation: fadeIn 0.25s ease;
+  }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .card-tag { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text3); margin-bottom: 3px; }
+  .card-text { font-size: 14px; color: var(--text); line-height: 1.5; }
+  .card-delete { background: none; border: none; color: var(--text3); cursor: pointer; font-size: 18px; padding: 0; line-height: 1; transition: color 0.2s; flex-shrink: 0; }
+  .card-delete:hover { color: var(--red); }
+
+  .info-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 10px; margin-bottom: 24px; }
+  .info-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; }
+  .info-label { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text3); margin-bottom: 6px; }
+  .info-value {
+    font-size: 14px; color: var(--text); background: none; border: none;
+    font-family: 'DM Sans', sans-serif; font-weight: 400; width: 100%; padding: 0;
+  }
+  .info-value:focus { outline: none; color: var(--accent); }
+
+  .period-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px 28px; margin-bottom: 20px; }
+  .period-row { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin-bottom: 20px; }
+  .period-field { display: flex; flex-direction: column; gap: 6px; }
+  .period-field label { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text3); }
+  .period-field input {
+    background: var(--surface2); border: 1px solid var(--border); border-radius: 8px;
+    color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; padding: 10px 14px;
+  }
+  .period-field input:focus { outline: none; border-color: var(--accent2); }
+  .period-status { background: var(--surface2); border-radius: 12px; padding: 18px 22px; display: flex; gap: 28px; flex-wrap: wrap; }
+  .period-stat { display: flex; flex-direction: column; gap: 4px; }
+  .period-stat .num { font-family: 'Playfair Display', serif; font-size: 26px; color: var(--accent); line-height: 1; }
+  .period-stat .desc { font-size: 11px; color: var(--text3); }
+  .period-alert { margin-top: 14px; padding: 12px 16px; border-radius: 10px; font-size: 13px; line-height: 1.5; }
+  .period-alert.warning { background: rgba(232,164,176,0.1); color: var(--accent3); border: 1px solid rgba(232,164,176,0.2); }
+  .period-alert.safe { background: rgba(139,191,170,0.1); color: var(--green); border: 1px solid rgba(139,191,170,0.2); }
+
+  .notes-area {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 300;
+    line-height: 1.8; padding: 18px 22px; width: 100%; resize: vertical; transition: border-color 0.2s;
+  }
+  .notes-area:focus { outline: none; border-color: var(--accent2); }
+
+  .note-entry {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    padding: 18px 20px; margin-bottom: 10px; animation: fadeIn 0.25s ease;
+  }
+  .note-entry-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+  .note-entry-title { font-family: 'Playfair Display', serif; font-size: 15px; color: var(--accent); }
+  .note-entry-date { font-size: 11px; color: var(--text3); margin-top: 2px; }
+  .note-entry-body { font-size: 14px; color: var(--text2); line-height: 1.7; white-space: pre-wrap; }
+
+  .save-info-btn {
+    background: var(--surface2); border: 1px solid var(--border); border-radius: 8px;
+    color: var(--text3); font-family: 'DM Sans', sans-serif; font-size: 12px;
+    padding: 8px 18px; cursor: pointer; transition: all 0.2s;
+  }
+  .save-info-btn:hover { border-color: var(--accent2); color: var(--accent); }
+  .save-info-btn.saved { border-color: var(--green); color: var(--green); }
+
+  .empty { text-align: center; padding: 36px; color: var(--text3); font-size: 13px; font-style: italic; }
+  .loading { text-align: center; padding: 20px; color: var(--text3); font-size: 13px; }
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  @media (max-width: 600px) {
+    header { padding: 24px 20px 20px; flex-direction: column; align-items: flex-start; }
+    .header-right { width: 100%; }
+    .anniversary-badge { flex: 1; min-width: unset; }
+    nav { padding: 12px 20px 0; }
+    main { padding: 24px 20px; }
+    .header-left h1 { font-size: 28px; }
+  }
+</style>
 </head>
 <body>
+
+<!-- AUTH SCREEN -->
+<div id="auth-screen">
+  <div class="auth-box">
+    <h1>in<span>Love</span></h1>
+    <p>nhật ký riêng của mình 💌</p>
+    <div class="auth-tabs">
+      <button class="auth-tab active" onclick="switchAuth('login')">Đăng nhập</button>
+      <button class="auth-tab" onclick="switchAuth('register')">Đăng ký</button>
+    </div>
+    <div id="login-form">
+      <div class="auth-field"><label>Email</label><input type="email" id="login-email" placeholder="email của mày"></div>
+      <div class="auth-field"><label>Mật khẩu</label><input type="password" id="login-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
+      <button class="auth-btn" onclick="doLogin()">Đăng nhập</button>
+    </div>
+    <div id="register-form" style="display:none">
+      <div class="auth-field"><label>Email</label><input type="email" id="reg-email" placeholder="email của mày"></div>
+      <div class="auth-field"><label>Mật khẩu</label><input type="password" id="reg-pass" placeholder="tối thiểu 6 ký tự" onkeydown="if(event.key==='Enter')doRegister()"></div>
+      <button class="auth-btn" onclick="doRegister()">Tạo tài khoản</button>
+    </div>
+    <div class="auth-error" id="auth-error"></div>
+  </div>
+</div>
+
+<!-- APP SCREEN -->
+<div id="app-screen">
+  <header>
+    <div class="header-left">
+      <h1 contenteditable="true" spellcheck="false" id="header-title" oninput="scheduleHeaderSave()">nhật ký <span>của mình</span></h1>
+      <p contenteditable="true" spellcheck="false" id="header-sub" oninput="scheduleHeaderSave()">những điều mình nhớ về cô ấy</p>
+    </div>
+    <div class="header-right">
+      <div class="anniversary-badge">
+        <div class="days" id="days-count">—</div>
+        <div class="label">ngày bên nhau</div>
+        <input type="date" id="anniv-date" class="date-input" onchange="saveAnniv()">
+      </div>
+      <button class="logout-btn" onclick="doLogout()">Đăng xuất</button>
+    </div>
+  </header>
+
+  <nav>
+    <button class="nav-btn active" onclick="switchTab('thich',this)">✦ Sở thích</button>
+    <button class="nav-btn" onclick="switchTab('ghet',this)">✦ Không thích</button>
+    <button class="nav-btn" onclick="switchTab('kieu',this)">✦ Cẩn thận</button>
+    <button class="nav-btn" onclick="switchTab('thongtin',this)">✦ Thông tin</button>
+    <button class="nav-btn" onclick="switchTab('kinhguyet',this)">✦ Chu kỳ</button>
+    <button class="nav-btn" onclick="switchTab('ghichu',this)">✦ Ghi chú</button>
+  </nav>
+
+  <main>
+    <!-- SỞ THÍCH -->
+    <div class="tab-content active" id="tab-thich">
+      <div class="section-header"><div class="section-title">Cô ấy thích <small>thêm những gì cô ấy yêu thích</small></div></div>
+      <div class="add-form">
+        <select id="thich-cat">
+          <option value="Đồ ăn">🍜 Đồ ăn</option>
+          <option value="Đồ uống">🧋 Đồ uống</option>
+          <option value="Âm nhạc">🎵 Âm nhạc</option>
+          <option value="Vật phẩm">🎀 Vật phẩm</option>
+          <option value="Hoạt động">✨ Hoạt động</option>
+          <option value="Khác">💫 Khác</option>
+        </select>
+        <input type="text" id="thich-input" placeholder="thêm điều cô ấy thích..." onkeydown="if(event.key==='Enter')addItem('thich')">
+        <button class="btn-add" onclick="addItem('thich')">Thêm</button>
+      </div>
+      <div class="cards-grid" id="thich-list"><div class="loading">Đang tải...</div></div>
+    </div>
+
+    <!-- KHÔNG THÍCH -->
+    <div class="tab-content" id="tab-ghet">
+      <div class="section-header"><div class="section-title">Cô ấy không thích <small>tránh những điều này</small></div></div>
+      <div class="add-form">
+        <select id="ghet-cat">
+          <option value="Đồ ăn">🍜 Đồ ăn</option>
+          <option value="Hành vi">⚡ Hành vi</option>
+          <option value="Tình huống">😤 Tình huống</option>
+          <option value="Khác">💫 Khác</option>
+        </select>
+        <input type="text" id="ghet-input" placeholder="thêm điều cô ấy ghét..." onkeydown="if(event.key==='Enter')addItem('ghet')">
+        <button class="btn-add" onclick="addItem('ghet')">Thêm</button>
+      </div>
+      <div class="cards-grid" id="ghet-list"><div class="loading">Đang tải...</div></div>
+    </div>
+
+    <!-- CẨN THẬN -->
+    <div class="tab-content" id="tab-kieu">
+      <div class="section-header"><div class="section-title">Cần lưu ý <small>đừng để cô ấy buồn</small></div></div>
+      <div class="add-form">
+        <input type="text" id="kieu-input" placeholder="điều cần nhớ khi ở cạnh cô ấy..." onkeydown="if(event.key==='Enter')addItem('kieu')">
+        <button class="btn-add" onclick="addItem('kieu')">Thêm</button>
+      </div>
+      <div class="cards-grid" id="kieu-list"><div class="loading">Đang tải...</div></div>
+    </div>
+
+    <!-- THÔNG TIN -->
+    <div class="tab-content" id="tab-thongtin">
+      <div class="section-header">
+        <div class="section-title">Thông tin <small>về cô ấy</small></div>
+        <button class="save-info-btn" id="save-info-btn" onclick="saveInfo()">Lưu thông tin</button>
+      </div>
+      <div class="info-grid">
+        <div class="info-card"><div class="info-label">Tên</div><input class="info-value" data-key="ten" placeholder="..."></div>
+        <div class="info-card"><div class="info-label">Ngày sinh</div><input class="info-value" data-key="ngaysinh" type="date"></div>
+        <div class="info-card"><div class="info-label">Chiều cao</div><input class="info-value" data-key="chieucao" placeholder="..."></div>
+        <div class="info-card"><div class="info-label">Cân nặng</div><input class="info-value" data-key="cannang" placeholder="..."></div>
+        <div class="info-card"><div class="info-label">Size quần áo</div><input class="info-value" data-key="size" placeholder="..."></div>
+        <div class="info-card"><div class="info-label">Size giày</div><input class="info-value" data-key="sizegiay" placeholder="..."></div>
+        <div class="info-card"><div class="info-label">Màu yêu thích</div><input class="info-value" data-key="mau" placeholder="..."></div>
+        <div class="info-card"><div class="info-label">Nhóm máu</div><input class="info-value" data-key="nhommau" placeholder="..."></div>
+        <div class="info-card"><div class="info-label">Nghề nghiệp</div><input class="info-value" data-key="nghenghiep" placeholder="..."></div>
+        <div class="info-card"><div class="info-label">Địa chỉ</div><input class="info-value" data-key="diachi" placeholder="..."></div>
+        <div class="info-card"><div class="info-label">Son môi hay dùng</div><input class="info-value" data-key="son" placeholder="..."></div>
+        <div class="info-card"><div class="info-label">Idol / nhóm nhạc</div><input class="info-value" data-key="idol" placeholder="..."></div>
+      </div>
+    </div>
+
+    <!-- CHU KỲ -->
+    <div class="tab-content" id="tab-kinhguyet">
+      <div class="section-header"><div class="section-title">Chu kỳ <small>theo dõi để quan tâm đúng lúc</small></div></div>
+      <div class="period-card">
+        <div class="period-row">
+          <div class="period-field"><label>Ngày bắt đầu lần cuối</label><input type="date" id="period-last" onchange="savePeriod()"></div>
+          <div class="period-field"><label>Độ dài chu kỳ (ngày)</label><input type="number" id="period-cycle" value="28" min="21" max="35" onchange="savePeriod()"></div>
+          <div class="period-field"><label>Thời gian hành kinh (ngày)</label><input type="number" id="period-duration" value="5" min="3" max="10" onchange="savePeriod()"></div>
+        </div>
+        <div class="period-status">
+          <div class="period-stat"><span class="num" id="p-next">—</span><span class="desc">ngày đến kỳ tiếp</span></div>
+          <div class="period-stat"><span class="num" id="p-date">—</span><span class="desc">ngày bắt đầu dự kiến</span></div>
+          <div class="period-stat"><span class="num" id="p-end">—</span><span class="desc">ngày kết thúc dự kiến</span></div>
+        </div>
+        <div id="period-alert"></div>
+      </div>
+    </div>
+
+    <!-- GHI CHÚ -->
+    <div class="tab-content" id="tab-ghichu">
+      <div class="section-header"><div class="section-title">Ghi chú <small>những khoảnh khắc muốn nhớ mãi</small></div></div>
+      <div style="margin-bottom:24px">
+        <input type="text" id="note-title" placeholder="tiêu đề..." style="width:100%;background:var(--surface);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;padding:12px 16px;margin-bottom:10px;font-weight:300" onfocus="this.style.borderColor='var(--accent2)'" onblur="this.style.borderColor='var(--border)'">
+        <textarea id="note-body" class="notes-area" placeholder="viết gì đó về cô ấy..." rows="5" style="margin-bottom:10px"></textarea>
+        <div style="display:flex;justify-content:flex-end">
+          <button class="btn-add" onclick="addNote()">+ Thêm ghi chú</button>
+        </div>
+      </div>
+      <div id="notes-list"><div class="loading">Đang tải...</div></div>
+    </div>
+  </main>
+</div>
+
+<!-- FIREBASE -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
+  import { getFirestore, doc, getDoc, setDoc, collection, addDoc, getDocs, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBKRsdMHS90BzJYFWNT11-QFy2g2PsrCrs",
+    authDomain: "inlove-7c18d.firebaseapp.com",
+    projectId: "inlove-7c18d",
+    storageBucket: "inlove-7c18d.firebasestorage.app",
+    messagingSenderId: "64642895660",
+    appId: "1:64642895660:web:29e8f74c55c6720c8d6689"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  let uid = null;
+
+  // ── AUTH UI ──────────────────────────────────────────
+  window.switchAuth = (tab) => {
+    document.getElementById('login-form').style.display = tab === 'login' ? 'block' : 'none';
+    document.getElementById('register-form').style.display = tab === 'register' ? 'block' : 'none';
+    document.querySelectorAll('.auth-tab').forEach((b,i) => b.classList.toggle('active', (tab==='login'&&i===0)||(tab==='register'&&i===1)));
+    document.getElementById('auth-error').textContent = '';
+  };
+
+  window.doLogin = async () => {
+    const email = document.getElementById('login-email').value.trim();
+    const pass = document.getElementById('login-pass').value;
+    try { await signInWithEmailAndPassword(auth, email, pass); }
+    catch(e) { document.getElementById('auth-error').textContent = 'Email hoặc mật khẩu không đúng'; }
+  };
+
+  window.doRegister = async () => {
+    const email = document.getElementById('reg-email').value.trim();
+    const pass = document.getElementById('reg-pass').value;
+    try { await createUserWithEmailAndPassword(auth, email, pass); }
+    catch(e) { document.getElementById('auth-error').textContent = e.message.includes('email') ? 'Email đã tồn tại' : 'Mật khẩu tối thiểu 6 ký tự'; }
+  };
+
+  window.doLogout = () => signOut(auth);
+
+  // ── AUTH STATE ───────────────────────────────────────
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      uid = user.uid;
+      document.getElementById('auth-screen').style.display = 'none';
+      document.getElementById('app-screen').style.display = 'block';
+      await loadAll();
+    } else {
+      uid = null;
+      document.getElementById('auth-screen').style.display = 'flex';
+      document.getElementById('app-screen').style.display = 'none';
+    }
+  });
+
+  // ── HELPERS ──────────────────────────────────────────
+  const uref = (path) => doc(db, 'users', uid, ...path.split('/'));
+  const ucol = (path) => collection(db, 'users', uid, path);
+
+  // ── LOAD ALL ─────────────────────────────────────────
+  async function loadAll() {
+    await Promise.all([
+      loadMeta(), loadItems('thich'), loadItems('ghet'), loadItems('kieu'),
+      loadInfo(), loadNotes(), loadPeriod()
+    ]);
+  }
+
+  // ── META (header + anniv) ────────────────────────────
+  async function loadMeta() {
+    try {
+      const snap = await getDoc(uref('meta/main'));
+      if (snap.exists()) {
+        const d = snap.data();
+        if (d.headerTitle) document.getElementById('header-title').innerHTML = d.headerTitle;
+        if (d.headerSub) document.getElementById('header-sub').textContent = d.headerSub;
+        if (d.anniv) { document.getElementById('anniv-date').value = d.anniv; updateDays(d.anniv); }
+      }
+    } catch(e) {}
+  }
+
+  let headerTimer;
+  window.scheduleHeaderSave = () => { clearTimeout(headerTimer); headerTimer = setTimeout(saveHeader, 1000); };
+  async function saveHeader() {
+    if (!uid) return;
+    await setDoc(uref('meta/main'), {
+      headerTitle: document.getElementById('header-title').innerHTML,
+      headerSub: document.getElementById('header-sub').textContent
+    }, { merge: true });
+  }
+
+  window.saveAnniv = async () => {
+    const val = document.getElementById('anniv-date').value;
+    updateDays(val);
+    await setDoc(uref('meta/main'), { anniv: val }, { merge: true });
+  };
+
+  function updateDays(val) {
+    if (!val) return;
+    const diff = Math.floor((new Date() - new Date(val)) / 86400000);
+    document.getElementById('days-count').textContent = diff >= 0 ? diff : '—';
+  }
+
+  // ── ITEMS (thich / ghet / kieu) ──────────────────────
+  async function loadItems(type) {
+    const el = document.getElementById(type + '-list');
+    try {
+      const snap = await getDocs(query(ucol(type), orderBy('createdAt', 'asc')));
+      const items = [];
+      snap.forEach(d => items.push({ id: d.id, ...d.data() }));
+      renderItems(type, items);
+    } catch(e) { el.innerHTML = '<div class="empty">chưa có gì... thêm vào đi 💫</div>'; }
+  }
+
+  function renderItems(type, items) {
+    const el = document.getElementById(type + '-list');
+    if (!items.length) { el.innerHTML = '<div class="empty">chưa có gì... thêm vào đi 💫</div>'; return; }
+    el.innerHTML = items.map(item => `
+      <div class="card">
+        <div style="flex:1">
+          ${item.cat ? `<div class="card-tag">${item.cat}</div>` : ''}
+          <div class="card-text">${item.text}</div>
+        </div>
+        <button class="card-delete" onclick="deleteItem('${type}','${item.id}')">×</button>
+      </div>`).join('');
+  }
+
+  window.addItem = async (type) => {
+    const input = document.getElementById(type + '-input');
+    const catEl = document.getElementById(type + '-cat');
+    const text = input.value.trim();
+    if (!text) return;
+    await addDoc(ucol(type), { cat: catEl ? catEl.value : '', text, createdAt: Date.now() });
+    input.value = '';
+    loadItems(type);
+  };
+
+  window.deleteItem = async (type, id) => {
+    await deleteDoc(doc(db, 'users', uid, type, id));
+    loadItems(type);
+  };
+
+  // ── INFO ─────────────────────────────────────────────
+  async function loadInfo() {
+    try {
+      const snap = await getDoc(uref('meta/info'));
+      if (snap.exists()) {
+        const d = snap.data();
+        document.querySelectorAll('.info-value[data-key]').forEach(el => { if (d[el.dataset.key]) el.value = d[el.dataset.key]; });
+      }
+    } catch(e) {}
+  }
+
+  window.saveInfo = async () => {
+    const data = {};
+    document.querySelectorAll('.info-value[data-key]').forEach(el => { data[el.dataset.key] = el.value; });
+    await setDoc(uref('meta/info'), data);
+    const btn = document.getElementById('save-info-btn');
+    btn.textContent = '✓ Đã lưu'; btn.classList.add('saved');
+    setTimeout(() => { btn.textContent = 'Lưu thông tin'; btn.classList.remove('saved'); }, 2000);
+  };
+
+  // ── NOTES ────────────────────────────────────────────
+  async function loadNotes() {
+    const el = document.getElementById('notes-list');
+    try {
+      const snap = await getDocs(query(ucol('notes'), orderBy('createdAt', 'desc')));
+      const notes = [];
+      snap.forEach(d => notes.push({ id: d.id, ...d.data() }));
+      if (!notes.length) { el.innerHTML = '<div class="empty">chưa có ghi chú nào... viết gì đó đi 💫</div>'; return; }
+      el.innerHTML = notes.map(n => `
+        <div class="note-entry">
+          <div class="note-entry-header">
+            <div><div class="note-entry-title">${n.title||'Ghi chú'}</div><div class="note-entry-date">${n.date||''}</div></div>
+            <button class="card-delete" onclick="deleteNote('${n.id}')">×</button>
+          </div>
+          <div class="note-entry-body">${n.body}</div>
+        </div>`).join('');
+    } catch(e) { el.innerHTML = '<div class="empty">chưa có ghi chú nào 💫</div>'; }
+  }
+
+  window.addNote = async () => {
+    const title = document.getElementById('note-title').value.trim();
+    const body = document.getElementById('note-body').value.trim();
+    if (!body) return;
+    await addDoc(ucol('notes'), {
+      title: title || 'Ghi chú', body,
+      date: new Date().toLocaleDateString('vi-VN', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' }),
+      createdAt: Date.now()
+    });
+    document.getElementById('note-title').value = '';
+    document.getElementById('note-body').value = '';
+    loadNotes();
+  };
+
+  window.deleteNote = async (id) => {
+    await deleteDoc(doc(db, 'users', uid, 'notes', id));
+    loadNotes();
+  };
+
+  // ── PERIOD ───────────────────────────────────────────
+  async function loadPeriod() {
+    try {
+      const snap = await getDoc(uref('meta/period'));
+      if (snap.exists()) {
+        const d = snap.data();
+        if (d.last) document.getElementById('period-last').value = d.last;
+        if (d.cycle) document.getElementById('period-cycle').value = d.cycle;
+        if (d.duration) document.getElementById('period-duration').value = d.duration;
+      }
+    } catch(e) {}
+    updatePeriod();
+  }
+
+  window.savePeriod = async () => {
+    await setDoc(uref('meta/period'), {
+      last: document.getElementById('period-last').value,
+      cycle: parseInt(document.getElementById('period-cycle').value)||28,
+      duration: parseInt(document.getElementById('period-duration').value)||5
+    });
+    updatePeriod();
+  };
+
+  function updatePeriod() {
+    const lastVal = document.getElementById('period-last').value;
+    const cycle = parseInt(document.getElementById('period-cycle').value)||28;
+    const duration = parseInt(document.getElementById('period-duration').value)||5;
+    if (!lastVal) return;
+    const last = new Date(lastVal);
+    const nextStart = new Date(last); nextStart.setDate(nextStart.getDate() + cycle);
+    const nextEnd = new Date(nextStart); nextEnd.setDate(nextEnd.getDate() + duration - 1);
+    const now = new Date(); now.setHours(0,0,0,0);
+    const daysUntil = Math.floor((nextStart - now) / 86400000);
+    const fmt = d => d.toLocaleDateString('vi-VN', { day:'2-digit', month:'2-digit' });
+    document.getElementById('p-next').textContent = daysUntil >= 0 ? daysUntil : 0;
+    document.getElementById('p-date').textContent = fmt(nextStart);
+    document.getElementById('p-end').textContent = fmt(nextEnd);
+    const alertEl = document.getElementById('period-alert');
+    if (daysUntil <= 0 && daysUntil > -duration)
+      alertEl.innerHTML = `<div class="period-alert warning">🌸 Cô ấy đang trong kỳ — hãy quan tâm nhiều hơn nhé.</div>`;
+    else if (daysUntil <= 3 && daysUntil > 0)
+      alertEl.innerHTML = `<div class="period-alert warning">⚠️ Còn ${daysUntil} ngày nữa — cô ấy có thể sẽ nhạy cảm hơn.</div>`;
+    else
+      alertEl.innerHTML = `<div class="period-alert safe">✓ Hiện tại ổn — còn ${daysUntil} ngày nữa.</div>`;
+  }
+
+  // ── TABS ─────────────────────────────────────────────
+  window.switchTab = (name, btn) => {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    if (btn) btn.classList.add('active');
+  };
+</script>
 </body>
 </html>
