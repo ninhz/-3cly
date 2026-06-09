@@ -652,7 +652,7 @@
   <div class="auth-box">
     <div class="auth-logo">💌</div>
     <h1>in<em>Love</em></h1>
-    <p>nhật ký riêng của mình 🌸</p>
+    <p>nhật ký riêng của mình 🩷</p>
     <div class="auth-tabs">
       <button class="auth-tab active" onclick="switchAuth('login')">Đăng nhập</button>
       <button class="auth-tab" onclick="switchAuth('register')">Đăng ký</button>
@@ -675,9 +675,10 @@
 <div id="app-screen">
   <header>
     <div class="header-left">
-      <div class="avatar-wrap" onclick="document.getElementById('avatar-input').click()">
-        <div class="avatar-placeholder" id="avatar-placeholder">🌸</div>
-        <img id="avatar-img" class="avatar-img" style="display:none" src="" alt="">
+      <div class="avatar-wrap" id="avatar-wrap">
+        <div class="avatar-placeholder" id="avatar-placeholder" onclick="document.getElementById('avatar-input').click()">🩷</div>
+        <img id="avatar-img" class="avatar-img" style="display:none" src="" alt="" onclick="document.getElementById('avatar-input').click()">
+        <button id="avatar-remove-btn" onclick="removeAvatar()" title="Gỡ ảnh" style="display:none;position:absolute;top:-4px;right:-4px;width:20px;height:20px;border-radius:50%;background:rgba(224,85,117,0.9);border:2px solid rgba(255,255,255,0.3);color:#fff;font-size:11px;cursor:pointer;line-height:1;padding:0;z-index:2;transition:transform .2s;" onmouseover="this.style.transform='scale(1.15)'" onmouseout="this.style.transform='scale(1)'">×</button>
         <input type="file" id="avatar-input" accept="image/*" onchange="uploadAvatar(this)">
       </div>
       <div class="header-titles">
@@ -691,14 +692,15 @@
         <div class="label">ngày bên nhau</div>
         <input type="date" id="anniv-date" class="date-input" onchange="saveAnniv()">
       </div>
-      <button class="logout-btn" onclick="openTheme()" style="font-size:16px;padding:8px 12px" title="Đổi theme">🎨</button>
-      <button class="logout-btn" onclick="doLogout()">Đăng xuất</button>
+      <button class="logout-btn" onclick="openSettings()" style="font-size:18px;padding:8px 12px;line-height:1" title="Cài đặt">⚙️</button>
+
+
     </div>
   </header>
 
   <!-- BOTTOM NAV -->
   <nav>
-    <button class="nav-btn active" onclick="switchTab('thich',this)"><div class="nav-icon-wrap"><span class="nav-icon">🌸</span></div><span class="nav-label">Thích</span></button>
+    <button class="nav-btn active" onclick="switchTab('thich',this)"><div class="nav-icon-wrap"><span class="nav-icon">🩷</span></div><span class="nav-label">Thích</span></button>
     <button class="nav-btn" onclick="switchTab('ghet',this)"><div class="nav-icon-wrap"><span class="nav-icon">🙅</span></div><span class="nav-label">Ghét</span></button>
     <button class="nav-btn" onclick="switchTab('kieu',this)"><div class="nav-icon-wrap"><span class="nav-icon">💛</span></div><span class="nav-label">Cẩn thận</span></button>
     <button class="nav-btn" onclick="switchTab('thongtin',this)"><div class="nav-icon-wrap"><span class="nav-icon">📋</span></div><span class="nav-label">Thông tin</span></button>
@@ -875,63 +877,107 @@
   </main>
 </div>
 
-<!-- THEME MODAL -->
-<div id="theme-modal" style="display:none;position:fixed;inset:0;z-index:200;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);">
-  <div style="background:rgba(30,15,25,0.95);border:1px solid rgba(255,255,255,.15);border-radius:24px;padding:32px;max-width:420px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,.7);">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
-      <div style="font-family:'Playfair Display',serif;font-size:20px;color:#fff">🎨 Đổi giao diện</div>
-      <button onclick="closeTheme()" style="background:none;border:none;color:rgba(255,255,255,.5);font-size:22px;cursor:pointer;line-height:1">×</button>
+<!-- SETTINGS DRAWER -->
+<div id="settings-overlay" onclick="closeSettings()" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.5);backdrop-filter:blur(6px);"></div>
+<div id="settings-drawer" style="display:none;position:fixed;top:0;right:0;bottom:0;z-index:201;width:min(340px,92vw);background:rgba(18,8,16,0.97);border-left:1px solid rgba(255,255,255,.1);overflow-y:auto;transform:translateX(100%);transition:transform .3s cubic-bezier(.32,.72,0,1);box-shadow:-8px 0 40px rgba(0,0,0,.6);">
+  <div style="padding:24px 22px 40px">
+    <!-- Header -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px">
+      <div style="font-family:'Playfair Display',serif;font-size:20px;color:#fff">Cài đặt</div>
+      <button onclick="closeSettings()" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:rgba(255,255,255,.6);font-size:18px;cursor:pointer;width:36px;height:36px;line-height:1;transition:all .2s" onmouseover="this.style.background='rgba(255,255,255,.14)'" onmouseout="this.style.background='rgba(255,255,255,.08)'">×</button>
     </div>
-    <!-- PRESET THEMES -->
-    <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:12px;font-weight:600">Màu sắc</div>
-    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:24px">
-      <div class="theme-opt" data-theme="sakura" onclick="setTheme('sakura')" title="Sakura">
-        <div style="width:100%;aspect-ratio:1;border-radius:14px;background:linear-gradient(135deg,#1a0d14,#9b4f6a);border:2px solid rgba(255,255,255,.1)"></div>
-        <div style="font-size:10px;color:rgba(255,255,255,.6);text-align:center;margin-top:5px">Sakura</div>
-      </div>
-      <div class="theme-opt" data-theme="midnight" onclick="setTheme('midnight')" title="Midnight">
-        <div style="width:100%;aspect-ratio:1;border-radius:14px;background:linear-gradient(135deg,#060612,#3d2a6b);border:2px solid rgba(255,255,255,.1)"></div>
-        <div style="font-size:10px;color:rgba(255,255,255,.6);text-align:center;margin-top:5px">Midnight</div>
-      </div>
-      <div class="theme-opt" data-theme="forest" onclick="setTheme('forest')" title="Forest">
-        <div style="width:100%;aspect-ratio:1;border-radius:14px;background:linear-gradient(135deg,#071410,#1a5e38);border:2px solid rgba(255,255,255,.1)"></div>
-        <div style="font-size:10px;color:rgba(255,255,255,.6);text-align:center;margin-top:5px">Forest</div>
-      </div>
-      <div class="theme-opt" data-theme="sunset" onclick="setTheme('sunset')" title="Sunset">
-        <div style="width:100%;aspect-ratio:1;border-radius:14px;background:linear-gradient(135deg,#1a0d00,#7a3010);border:2px solid rgba(255,255,255,.1)"></div>
-        <div style="font-size:10px;color:rgba(255,255,255,.6);text-align:center;margin-top:5px">Sunset</div>
-      </div>
-      <div class="theme-opt" data-theme="ocean" onclick="setTheme('ocean')" title="Ocean">
-        <div style="width:100%;aspect-ratio:1;border-radius:14px;background:linear-gradient(135deg,#050d1a,#0a3a6e);border:2px solid rgba(255,255,255,.1)"></div>
-        <div style="font-size:10px;color:rgba(255,255,255,.6);text-align:center;margin-top:5px">Ocean</div>
-      </div>
-      <div class="theme-opt" data-theme="hellokitty" onclick="setTheme('hellokitty')" title="Hello Kitty">
-        <div style="width:100%;aspect-ratio:1;border-radius:14px;background:linear-gradient(135deg,#2a0018,#ff4d94);border:2px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:20px">🎀</div>
-        <div style="font-size:10px;color:rgba(255,255,255,.6);text-align:center;margin-top:5px">Kitty</div>
+
+    <!-- AVATAR -->
+    <div style="margin-bottom:28px;padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,.07)">
+      <div class="settings-label">🩷 Ảnh đại diện</div>
+      <div style="display:flex;align-items:center;gap:14px;margin-top:12px">
+        <div style="position:relative;flex-shrink:0">
+          <div id="settings-avatar-placeholder" style="width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.08);border:2px dashed rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:26px;cursor:pointer" onclick="document.getElementById('avatar-input').click()">🩷</div>
+          <img id="settings-avatar-img" style="display:none;width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,.2);cursor:pointer" src="" onclick="document.getElementById('avatar-input').click()">
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;flex:1">
+          <label class="settings-btn" style="cursor:pointer;text-align:center">
+            📁 Chọn ảnh
+            <input type="file" id="avatar-input" accept="image/*" style="display:none" onchange="uploadAvatar(this)">
+          </label>
+          <button id="settings-remove-avatar-btn" class="settings-btn-danger" onclick="removeAvatar()" style="display:none">🗑 Gỡ ảnh</button>
+        </div>
       </div>
     </div>
+
+    <!-- THEME -->
+    <div style="margin-bottom:28px;padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,.07)">
+      <div class="settings-label">🎨 Giao diện</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px">
+        <div class="theme-opt" data-theme="sakura" onclick="setTheme('sakura')">
+          <div style="width:100%;aspect-ratio:1.4;border-radius:12px;background:linear-gradient(135deg,#1a0d14,#9b4f6a);border:2px solid rgba(255,255,255,.1)"></div>
+          <div class="theme-label">Sakura</div>
+        </div>
+        <div class="theme-opt" data-theme="midnight" onclick="setTheme('midnight')">
+          <div style="width:100%;aspect-ratio:1.4;border-radius:12px;background:linear-gradient(135deg,#060612,#3d2a6b);border:2px solid rgba(255,255,255,.1)"></div>
+          <div class="theme-label">Midnight</div>
+        </div>
+        <div class="theme-opt" data-theme="forest" onclick="setTheme('forest')">
+          <div style="width:100%;aspect-ratio:1.4;border-radius:12px;background:linear-gradient(135deg,#071410,#1a5e38);border:2px solid rgba(255,255,255,.1)"></div>
+          <div class="theme-label">Forest</div>
+        </div>
+        <div class="theme-opt" data-theme="sunset" onclick="setTheme('sunset')">
+          <div style="width:100%;aspect-ratio:1.4;border-radius:12px;background:linear-gradient(135deg,#1a0d00,#7a3010);border:2px solid rgba(255,255,255,.1)"></div>
+          <div class="theme-label">Sunset</div>
+        </div>
+        <div class="theme-opt" data-theme="ocean" onclick="setTheme('ocean')">
+          <div style="width:100%;aspect-ratio:1.4;border-radius:12px;background:linear-gradient(135deg,#050d1a,#0a3a6e);border:2px solid rgba(255,255,255,.1)"></div>
+          <div class="theme-label">Ocean</div>
+        </div>
+        <div class="theme-opt" data-theme="hellokitty" onclick="setTheme('hellokitty')">
+          <div style="width:100%;aspect-ratio:1.4;border-radius:12px;background:linear-gradient(135deg,#2a0018,#ff4d94);border:2px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:22px">🎀</div>
+          <div class="theme-label">Kitty</div>
+        </div>
+      </div>
+    </div>
+
     <!-- WALLPAPER -->
-    <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:12px;font-weight:600">Hình nền</div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <label style="flex:1;min-width:120px;background:rgba(255,255,255,.07);border:1px dashed rgba(255,255,255,.2);border-radius:14px;padding:14px;text-align:center;cursor:pointer;transition:all .2s;color:rgba(255,255,255,.6);font-size:13px;" onmouseover="this.style.background='rgba(255,255,255,.12)'" onmouseout="this.style.background='rgba(255,255,255,.07)'">
-        📁 Tải ảnh lên
-        <input type="file" accept="image/*" style="display:none" onchange="setWallpaper(this)">
-      </label>
-      <button onclick="removeWallpaper()" style="flex:1;min-width:120px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:14px;color:rgba(255,255,255,.6);font-size:13px;cursor:pointer;transition:all .2s;font-family:'Nunito',sans-serif;" onmouseover="this.style.background='rgba(255,255,255,.12)'" onmouseout="this.style.background='rgba(255,255,255,.07)'">🗑 Xoá hình nền</button>
+    <div style="margin-bottom:28px;padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,.07)">
+      <div class="settings-label">🖼 Hình nền</div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:12px">
+        <label class="settings-btn" style="cursor:pointer;text-align:center">
+          📁 Tải ảnh hình nền lên
+          <input type="file" accept="image/*" style="display:none" onchange="setWallpaper(this)">
+        </label>
+        <button class="settings-btn-danger" onclick="removeWallpaper()">🗑 Xóa hình nền</button>
+      </div>
+      <div style="margin-top:16px">
+        <div style="font-size:11px;letter-spacing:.8px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:8px;font-weight:600">Độ mờ overlay — <span id="overlay-val">45</span>%</div>
+        <input type="range" id="overlay-slider" min="0" max="80" value="45" oninput="setOverlay(this.value)" style="width:100%;accent-color:var(--pink3);height:4px;border-radius:4px;cursor:pointer">
+      </div>
     </div>
-    <!-- BLUR OVERLAY SLIDER -->
-    <div style="margin-top:20px">
-      <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:10px;font-weight:600">Độ mờ overlay <span id="overlay-val">45</span>%</div>
-      <input type="range" id="overlay-slider" min="0" max="80" value="45" oninput="setOverlay(this.value)"
-        style="width:100%;accent-color:var(--pink3);height:4px;border-radius:4px;cursor:pointer">
+
+    <!-- LOGOUT -->
+    <div>
+      <div class="settings-label">👤 Tài khoản</div>
+      <button class="settings-btn-danger" onclick="doLogout();closeSettings()" style="width:100%;margin-top:12px">↩ Đăng xuất</button>
     </div>
   </div>
 </div>
 
 <style>
-.theme-opt { cursor:pointer; transition:transform .15s; }
-.theme-opt:hover > div:first-child { border-color:rgba(255,255,255,.5)!important; transform:scale(1.05); }
-.theme-opt.active > div:first-child { border-color:#fff!important; box-shadow:0 0 0 2px rgba(255,255,255,.3); }
+.settings-label { font-size:11px;letter-spacing:.9px;text-transform:uppercase;color:rgba(255,255,255,.4);font-weight:700; }
+.settings-btn {
+  display:block;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);
+  border-radius:12px;color:rgba(255,255,255,.7);font-family:'Nunito',sans-serif;
+  font-size:13px;font-weight:600;padding:12px 16px;cursor:pointer;transition:all .2s;width:100%;
+}
+.settings-btn:hover { background:rgba(255,255,255,.13);border-color:rgba(255,255,255,.22); }
+.settings-btn-danger {
+  display:block;background:rgba(224,85,117,.1);border:1px solid rgba(224,85,117,.25);
+  border-radius:12px;color:rgba(224,85,117,.9);font-family:'Nunito',sans-serif;
+  font-size:13px;font-weight:600;padding:12px 16px;cursor:pointer;transition:all .2s;width:100%;
+}
+.settings-btn-danger:hover { background:rgba(224,85,117,.18);border-color:rgba(224,85,117,.4); }
+.theme-opt { cursor:pointer;transition:transform .15s; }
+.theme-opt:hover > div:first-child { border-color:rgba(255,255,255,.5)!important;transform:scale(1.03); }
+.theme-opt.active > div:first-child { border-color:#fff!important;box-shadow:0 0 0 2px rgba(255,255,255,.3); }
+.theme-label { font-size:10px;color:rgba(255,255,255,.55);text-align:center;margin-top:5px;font-weight:600; }
 </style>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
@@ -1016,6 +1062,7 @@ async function loadMeta(){
         document.getElementById('avatar-img').src=d.avatarUrl;
         document.getElementById('avatar-img').style.display='block';
         document.getElementById('avatar-placeholder').style.display='none';
+        document.getElementById('avatar-remove-btn').style.display='block';
       }
     }
   }catch(e){}
@@ -1056,14 +1103,39 @@ window.uploadAvatar=async(input)=>{
       document.getElementById('avatar-img').src=dataUrl;
       document.getElementById('avatar-img').style.display='block';
       document.getElementById('avatar-placeholder').style.display='none';
+      document.getElementById('avatar-remove-btn').style.display='block';
       // Lưu vào Firestore (không cần Storage)
       try{
         await setDoc(uref('meta','main'),{avatarUrl:dataUrl},{merge:true});
       }catch(err){console.log('Lưu avatar lỗi:',err);}
+      // sync settings drawer
+      const sai=document.getElementById('settings-avatar-img');
+      const sap=document.getElementById('settings-avatar-placeholder');
+      const srb=document.getElementById('settings-remove-avatar-btn');
+      if(sai){sai.src=dataUrl;sai.style.display='block';}
+      if(sap)sap.style.display='none';
+      if(srb)srb.style.display='block';
     };
     img.src=e.target.result;
   };
   reader.readAsDataURL(file);
+};
+
+// ── REMOVE AVATAR ────────────────────────────────────
+window.removeAvatar=async()=>{
+  document.getElementById('avatar-img').src='';
+  document.getElementById('avatar-img').style.display='none';
+  document.getElementById('avatar-placeholder').style.display='flex';
+  document.getElementById('avatar-remove-btn').style.display='none';
+  document.getElementById('avatar-input').value='';
+  // sync settings drawer
+  const sai=document.getElementById('settings-avatar-img');
+  const sap=document.getElementById('settings-avatar-placeholder');
+  const srb=document.getElementById('settings-remove-avatar-btn');
+  if(sai){sai.src='';sai.style.display='none';}
+  if(sap)sap.style.display='flex';
+  if(srb)srb.style.display='none';
+  try{ await setDoc(uref('meta','main'),{avatarUrl:''},{merge:true}); }catch(e){}
 };
 
 // ── GENERIC ITEMS ────────────────────────────────────
@@ -1130,7 +1202,7 @@ function updatePeriod(){
   document.getElementById('p-date').textContent=fmt(nextStart);
   document.getElementById('p-end').textContent=fmt(nextEnd);
   const alertEl=document.getElementById('period-alert');
-  if(daysUntil<=0&&daysUntil>-duration) alertEl.innerHTML=`<div class="period-alert warning">🌸 Cô ấy đang trong kỳ — hãy quan tâm nhiều hơn nhé.</div>`;
+  if(daysUntil<=0&&daysUntil>-duration) alertEl.innerHTML=`<div class="period-alert warning">🩷 Cô ấy đang trong kỳ — hãy quan tâm nhiều hơn nhé.</div>`;
   else if(daysUntil<=3&&daysUntil>0) alertEl.innerHTML=`<div class="period-alert warning">⚠️ Còn ${daysUntil} ngày nữa — cô ấy có thể sẽ nhạy cảm hơn.</div>`;
   else alertEl.innerHTML=`<div class="period-alert safe">✓ Hiện tại ổn — còn ${daysUntil} ngày nữa.</div>`;
 }
@@ -1450,14 +1522,39 @@ function applyOverlay(val){
   if(slider){ slider.value = overlay; document.getElementById('overlay-val').textContent = overlay; }
 })();
 
-window.openTheme = ()=>{
-  const m = document.getElementById('theme-modal');
-  m.style.display='flex';
-  // sync active state
+window.openSettings = ()=>{
+  const overlay = document.getElementById('settings-overlay');
+  const drawer = document.getElementById('settings-drawer');
+  overlay.style.display='block';
+  drawer.style.display='block';
+  requestAnimationFrame(()=>{ drawer.style.transform='translateX(0)'; });
+  // sync theme active
   const saved = localStorage.getItem('inlove_theme') || 'sakura';
   document.querySelectorAll('.theme-opt').forEach(el=>el.classList.toggle('active',el.dataset.theme===saved));
+  // sync avatar
+  const avatarImg = document.getElementById('avatar-img');
+  const settingsAvatarImg = document.getElementById('settings-avatar-img');
+  const settingsAvatarPh = document.getElementById('settings-avatar-placeholder');
+  const settingsRemoveBtn = document.getElementById('settings-remove-avatar-btn');
+  if(avatarImg && avatarImg.style.display!=='none' && avatarImg.src){
+    settingsAvatarImg.src = avatarImg.src;
+    settingsAvatarImg.style.display='block';
+    settingsAvatarPh.style.display='none';
+    settingsRemoveBtn.style.display='block';
+  } else {
+    settingsAvatarImg.style.display='none';
+    settingsAvatarPh.style.display='flex';
+    settingsRemoveBtn.style.display='none';
+  }
 };
-window.closeTheme = ()=>{ document.getElementById('theme-modal').style.display='none'; };
+window.closeSettings = ()=>{
+  const drawer = document.getElementById('settings-drawer');
+  drawer.style.transform='translateX(100%)';
+  setTimeout(()=>{
+    document.getElementById('settings-overlay').style.display='none';
+    drawer.style.display='none';
+  }, 300);
+};
 window.setTheme = (theme)=>{
   applyTheme(theme);
   localStorage.setItem('inlove_theme', theme);
@@ -1496,9 +1593,7 @@ window.setOverlay = (val)=>{
   document.getElementById('overlay-val').textContent = val;
 };
 // close modal on backdrop click
-document.getElementById('theme-modal').addEventListener('click', function(e){
-  if(e.target===this) closeTheme();
-});
+// settings overlay click handled inline
 </script>
 </body>
 </html>
