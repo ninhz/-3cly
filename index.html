@@ -771,6 +771,8 @@
     <!-- CHU KỲ -->
     <div class="tab-content" id="tab-kinhguyet">
       <div class="section-title">Chu kỳ <small>theo dõi để quan tâm đúng lúc</small></div>
+
+      <!-- Cài đặt chu kỳ -->
       <div class="period-card">
         <div class="period-row">
           <div class="period-field"><label>Ngày bắt đầu lần cuối</label><input type="date" id="period-last" onchange="savePeriod()"></div>
@@ -783,6 +785,75 @@
           <div class="period-stat"><span class="num" id="p-end">—</span><span class="desc">ngày kết thúc dự kiến</span></div>
         </div>
         <div id="period-alert"></div>
+      </div>
+
+      <!-- Nhắc nhở mua gì -->
+      <div class="period-card" style="margin-top:12px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+          <div style="font-size:13px;font-weight:700;color:var(--text2)">🛒 Cần chuẩn bị cho cô ấy</div>
+          <button class="btn-add" style="font-size:12px;padding:7px 14px" onclick="addPrepItem()">+ Thêm</button>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+          <input type="text" id="prep-input" placeholder="vd: chocolate, thuốc giảm đau..." class="period-inline-input" onkeydown="if(event.key==='Enter')addPrepItem()" style="flex:1;min-width:180px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:var(--text);font-family:'Nunito',sans-serif;font-size:13px;padding:9px 14px">
+        </div>
+        <div id="prep-list" style="display:flex;flex-wrap:wrap;gap:8px">
+          <div class="loading">Đang tải...</div>
+        </div>
+      </div>
+
+      <!-- Triệu chứng hay gặp -->
+      <div class="period-card" style="margin-top:12px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+          <div style="font-size:13px;font-weight:700;color:var(--text2)">🩺 Triệu chứng hay gặp</div>
+          <button class="btn-add" style="font-size:12px;padding:7px 14px" onclick="addSymptom()">+ Thêm</button>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+          <input type="text" id="symptom-input" placeholder="vd: đau lưng, đau đầu, thèm ăn ngọt..." style="flex:1;min-width:180px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:var(--text);font-family:'Nunito',sans-serif;font-size:13px;padding:9px 14px" onkeydown="if(event.key==='Enter')addSymptom()">
+        </div>
+        <div id="symptom-list" style="display:flex;flex-wrap:wrap;gap:8px">
+          <div class="loading">Đang tải...</div>
+        </div>
+      </div>
+
+      <!-- Lịch sử chu kỳ -->
+      <div class="period-card" style="margin-top:12px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+          <div style="font-size:13px;font-weight:700;color:var(--text2)">📅 Lịch sử chu kỳ</div>
+          <button class="btn-add" style="font-size:12px;padding:7px 14px" onclick="addPeriodHistory()">+ Thêm</button>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center">
+          <input type="date" id="history-date" style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:var(--text);font-family:'Nunito',sans-serif;font-size:13px;padding:9px 14px">
+          <input type="text" id="history-note" placeholder="ghi chú (tuỳ chọn)..." style="flex:1;min-width:140px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:var(--text);font-family:'Nunito',sans-serif;font-size:13px;padding:9px 14px">
+        </div>
+        <div id="period-history-list"><div class="loading">Đang tải...</div></div>
+      </div>
+
+      <!-- Mood tracker -->
+      <div class="period-card" style="margin-top:12px">
+        <div style="font-size:13px;font-weight:700;color:var(--text2);margin-bottom:14px">😊 Mood tracker hôm nay</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+          <button class="mood-btn" data-mood="😊" onclick="setMood('😊')">😊 Vui</button>
+          <button class="mood-btn" data-mood="😐" onclick="setMood('😐')">😐 Bình thường</button>
+          <button class="mood-btn" data-mood="😔" onclick="setMood('😔')">😔 Buồn</button>
+          <button class="mood-btn" data-mood="😠" onclick="setMood('😠')">😠 Cáu</button>
+          <button class="mood-btn" data-mood="😫" onclick="setMood('😫')">😫 Mệt</button>
+          <button class="mood-btn" data-mood="🥰" onclick="setMood('🥰')">🥰 Yêu đời</button>
+        </div>
+        <div id="mood-today" style="font-size:13px;color:var(--text3);font-style:italic">Chưa cập nhật hôm nay</div>
+        <div style="margin-top:16px;border-top:1px solid rgba(255,255,255,.07);padding-top:14px">
+          <div style="font-size:11px;letter-spacing:.8px;text-transform:uppercase;color:var(--text3);margin-bottom:10px;font-weight:600">7 ngày gần đây</div>
+          <div id="mood-history" style="display:flex;gap:8px;flex-wrap:wrap"></div>
+        </div>
+      </div>
+
+      <!-- Ghi chú theo ngày -->
+      <div class="period-card" style="margin-top:12px">
+        <div style="font-size:13px;font-weight:700;color:var(--text2);margin-bottom:14px">📝 Ghi chú hôm nay</div>
+        <textarea id="period-note-input" placeholder="hôm nay cô ấy thế nào, mình đã làm gì..." rows="3" style="width:100%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:12px;color:var(--text);font-family:'Nunito',sans-serif;font-size:13px;padding:12px 14px;resize:none;margin-bottom:10px;line-height:1.6"></textarea>
+        <div style="display:flex;justify-content:flex-end">
+          <button class="btn-add" style="font-size:12px;padding:8px 18px" onclick="savePeriodNote()">Lưu ghi chú</button>
+        </div>
+        <div id="period-notes-list" style="margin-top:14px"></div>
       </div>
     </div>
 
@@ -978,6 +1049,27 @@
 .theme-opt:hover > div:first-child { border-color:rgba(255,255,255,.5)!important;transform:scale(1.03); }
 .theme-opt.active > div:first-child { border-color:#fff!important;box-shadow:0 0 0 2px rgba(255,255,255,.3); }
 .theme-label { font-size:10px;color:rgba(255,255,255,.55);text-align:center;margin-top:5px;font-weight:600; }
+/* Period extras */
+.mood-btn {
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);
+  border-radius:20px;color:var(--text2);font-family:'Nunito',sans-serif;
+  font-size:12px;font-weight:600;padding:7px 14px;cursor:pointer;transition:all .2s;
+}
+.mood-btn:hover,.mood-btn.active { background:rgba(232,121,154,.2);border-color:rgba(232,121,154,.4);color:#fff; }
+.period-tag {
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);
+  border-radius:20px;color:var(--text2);font-size:12px;font-weight:600;
+  padding:6px 12px;font-family:'Nunito',sans-serif;
+}
+.period-tag button { background:none;border:none;color:rgba(255,255,255,.3);cursor:pointer;font-size:14px;padding:0;line-height:1;margin-left:2px; }
+.period-tag button:hover { color:var(--red); }
+.period-history-item {
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;padding:10px 14px;margin-bottom:8px;
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:13px;color:var(--text2);
+}
 /* Map hồng */
 .map-tiles { filter: hue-rotate(300deg) saturate(0.5) brightness(0.85) !important; }
 .leaflet-container { background:#1a0a14 !important; }
@@ -1060,7 +1152,7 @@ const ucol=(col)=>collection(db,'users',uid,col);
 
 async function loadAll(){
   await Promise.all([
-    loadMeta(),loadInfo(),loadPeriod(),
+    loadMeta(),loadInfo(),loadPeriod(),loadPeriodExtras(),
     loadItems('thich'),loadItems('ghet'),loadItems('kieu'),
     loadMilestones(),loadWishlist(),loadQuotes(),loadHenho(),loadNotes(),loadMapPlaces()
   ]);
@@ -1223,6 +1315,137 @@ function updatePeriod(){
   else if(daysUntil<=3&&daysUntil>0) alertEl.innerHTML=`<div class="period-alert warning">⚠️ Còn ${daysUntil} ngày nữa — cô ấy có thể sẽ nhạy cảm hơn.</div>`;
   else alertEl.innerHTML=`<div class="period-alert safe">✓ Hiện tại ổn — còn ${daysUntil} ngày nữa.</div>`;
 }
+
+// ── PERIOD EXTRAS ────────────────────────────────────
+async function loadPeriodExtras(){
+  await Promise.all([loadPrepItems(), loadSymptoms(), loadPeriodHistory(), loadMoodHistory(), loadPeriodNotes()]);
+}
+
+// PREP ITEMS
+async function loadPrepItems(){
+  const el=document.getElementById('prep-list');
+  try{
+    const snap=await getDocs(query(ucol('period_prep'),orderBy('createdAt','asc')));
+    const items=[];snap.forEach(d=>items.push({id:d.id,...d.data()}));
+    renderTags('prep-list',items,'deletePrepItem');
+  }catch{el.innerHTML='';}
+}
+function renderTags(elId,items,delFn){
+  const el=document.getElementById(elId);
+  if(!items.length){el.innerHTML='<span style="font-size:12px;color:var(--text3);font-style:italic">Chưa có...</span>';return;}
+  el.innerHTML=items.map(i=>`<span class="period-tag">${i.text}<button onclick="${delFn}('${i.id}')">×</button></span>`).join('');
+}
+window.addPrepItem=async()=>{
+  const input=document.getElementById('prep-input');const text=input.value.trim();if(!text)return;
+  await addDoc(ucol('period_prep'),{text,createdAt:Date.now()});input.value='';loadPrepItems();
+};
+window.deletePrepItem=async(id)=>{await deleteDoc(doc(db,'users',uid,'period_prep',id));loadPrepItems();};
+
+// SYMPTOMS
+async function loadSymptoms(){
+  const el=document.getElementById('symptom-list');
+  try{
+    const snap=await getDocs(query(ucol('period_symptoms'),orderBy('createdAt','asc')));
+    const items=[];snap.forEach(d=>items.push({id:d.id,...d.data()}));
+    renderTags('symptom-list',items,'deleteSymptom');
+  }catch{el.innerHTML='';}
+}
+window.addSymptom=async()=>{
+  const input=document.getElementById('symptom-input');const text=input.value.trim();if(!text)return;
+  await addDoc(ucol('period_symptoms'),{text,createdAt:Date.now()});input.value='';loadSymptoms();
+};
+window.deleteSymptom=async(id)=>{await deleteDoc(doc(db,'users',uid,'period_symptoms',id));loadSymptoms();};
+
+// PERIOD HISTORY
+async function loadPeriodHistory(){
+  const el=document.getElementById('period-history-list');
+  try{
+    const snap=await getDocs(query(ucol('period_history'),orderBy('dateTs','desc')));
+    const items=[];snap.forEach(d=>items.push({id:d.id,...d.data()}));
+    if(!items.length){el.innerHTML='<div style="font-size:12px;color:var(--text3);font-style:italic">Chưa có lịch sử...</div>';return;}
+    el.innerHTML=items.map(i=>{
+      const d=new Date(i.dateTs);
+      return `<div class="period-history-item">
+        <div>
+          <span style="color:var(--pink2);font-weight:700">${d.toLocaleDateString('vi-VN',{day:'2-digit',month:'2-digit',year:'numeric'})}</span>
+          ${i.note?`<span style="color:var(--text3);margin-left:10px;font-size:12px">${i.note}</span>`:''}
+        </div>
+        <button onclick="deletePeriodHistory('${i.id}')" style="background:none;border:none;color:rgba(255,255,255,.25);cursor:pointer;font-size:16px;padding:0">×</button>
+      </div>`;
+    }).join('');
+  }catch{el.innerHTML='';}
+}
+window.addPeriodHistory=async()=>{
+  const dateVal=document.getElementById('history-date').value;if(!dateVal)return;
+  const note=document.getElementById('history-note').value.trim();
+  await addDoc(ucol('period_history'),{dateTs:new Date(dateVal).getTime(),note,createdAt:Date.now()});
+  document.getElementById('history-date').value='';document.getElementById('history-note').value='';
+  loadPeriodHistory();
+};
+window.deletePeriodHistory=async(id)=>{await deleteDoc(doc(db,'users',uid,'period_history',id));loadPeriodHistory();};
+
+// MOOD TRACKER
+const todayStr=()=>new Date().toISOString().split('T')[0];
+async function loadMoodHistory(){
+  try{
+    const snap=await getDocs(query(ucol('period_mood'),orderBy('date','desc')));
+    const items=[];snap.forEach(d=>items.push({id:d.id,...d.data()}));
+    // Hiện mood hôm nay
+    const today=items.find(i=>i.date===todayStr());
+    const todayEl=document.getElementById('mood-today');
+    if(today) todayEl.innerHTML=`<span style="font-size:20px">${today.mood}</span> <span style="color:var(--text2)">${today.moodLabel||''} — hôm nay</span>`;
+    else todayEl.textContent='Chưa cập nhật hôm nay';
+    // Sync active button
+    document.querySelectorAll('.mood-btn').forEach(b=>b.classList.toggle('active',today&&b.dataset.mood===today.mood));
+    // 7 ngày gần nhất
+    const histEl=document.getElementById('mood-history');
+    const last7=items.slice(0,7).reverse();
+    if(!last7.length){histEl.innerHTML='<span style="font-size:12px;color:var(--text3);font-style:italic">Chưa có dữ liệu</span>';return;}
+    histEl.innerHTML=last7.map(i=>{
+      const d=new Date(i.date);
+      return `<div style="display:flex;flex-direction:column;align-items:center;gap:4px;background:rgba(255,255,255,.05);border-radius:10px;padding:8px 10px;min-width:48px">
+        <span style="font-size:20px">${i.mood}</span>
+        <span style="font-size:10px;color:var(--text3)">${d.getDate()}/${d.getMonth()+1}</span>
+      </div>`;
+    }).join('');
+  }catch{}
+}
+window.setMood=async(mood)=>{
+  const labels={'😊':'Vui','😐':'Bình thường','😔':'Buồn','😠':'Cáu','😫':'Mệt','🥰':'Yêu đời'};
+  const today=todayStr();
+  // Xóa mood cũ hôm nay nếu có
+  try{
+    const snap=await getDocs(ucol('period_mood'));
+    for(const d of snap.docs){ if(d.data().date===today) await deleteDoc(doc(db,'users',uid,'period_mood',d.id)); }
+  }catch{}
+  await addDoc(ucol('period_mood'),{mood,moodLabel:labels[mood]||'',date:today,createdAt:Date.now()});
+  loadMoodHistory();
+};
+
+// PERIOD NOTES
+async function loadPeriodNotes(){
+  const el=document.getElementById('period-notes-list');
+  try{
+    const snap=await getDocs(query(ucol('period_notes'),orderBy('createdAt','desc')));
+    const notes=[];snap.forEach(d=>notes.push({id:d.id,...d.data()}));
+    if(!notes.length){el.innerHTML='';return;}
+    el.innerHTML=notes.slice(0,5).map(n=>`
+      <div class="period-history-item" style="flex-direction:column;align-items:flex-start;gap:6px">
+        <div style="display:flex;justify-content:space-between;width:100%">
+          <span style="font-size:11px;color:var(--pink2);font-weight:700">${n.date||''}</span>
+          <button onclick="deletePeriodNote('${n.id}')" style="background:none;border:none;color:rgba(255,255,255,.25);cursor:pointer;font-size:16px;padding:0">×</button>
+        </div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.5;white-space:pre-wrap">${n.text}</div>
+      </div>`).join('');
+  }catch{el.innerHTML='';}
+}
+window.savePeriodNote=async()=>{
+  const text=document.getElementById('period-note-input').value.trim();if(!text)return;
+  const date=new Date().toLocaleDateString('vi-VN',{day:'2-digit',month:'2-digit',year:'numeric'});
+  await addDoc(ucol('period_notes'),{text,date,createdAt:Date.now()});
+  document.getElementById('period-note-input').value='';loadPeriodNotes();
+};
+window.deletePeriodNote=async(id)=>{await deleteDoc(doc(db,'users',uid,'period_notes',id));loadPeriodNotes();};
 
 // ── MILESTONES ───────────────────────────────────────
 async function loadMilestones(){
@@ -1443,7 +1666,17 @@ function renderMapPlaces(places){
   // Fit map to all markers
   if(places.length>0){
     const group=L.featureGroup(mapMarkers);
-    mapInstance.fitBounds(group.getBounds().pad(0.2),{maxZoom:14});
+    const bounds = group.getBounds();
+    const sw = bounds.getSouthWest();
+    const ne = bounds.getNorthEast();
+    const latDiff = Math.abs(ne.lat - sw.lat);
+    const lngDiff = Math.abs(ne.lng - sw.lng);
+    // Nếu chỉ có 1 điểm hoặc các điểm quá gần nhau, zoom cố định
+    if(latDiff < 0.01 && lngDiff < 0.01){
+      mapInstance.setView([sw.lat, sw.lng], 14);
+    } else {
+      mapInstance.fitBounds(bounds.pad(0.15),{maxZoom:14,minZoom:10});
+    }
   }
 
   // Render sidebar
