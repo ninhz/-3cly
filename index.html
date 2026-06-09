@@ -497,18 +497,106 @@
   .milestone-info .mi-next{font-size:11px;color:var(--pink2);margin-top:2px;}
 
   /* ── MAP ── */
-  #map-container{border-radius:18px;overflow:hidden;border:1px solid rgba(255,255,255,.1);margin-bottom:20px;box-shadow:var(--shadow);}
-  #map{height:360px;}
-  .leaflet-container{background:#150d12;}
-  .map-form{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
-  .map-form input{
-    background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.11);
-    border-radius:14px;color:var(--text);font-family:'Nunito',sans-serif;
-    font-size:14px;padding:11px 16px;transition:all .2s;font-weight:400;
+  #map-wrap { display:flex;gap:14px;margin-bottom:20px; }
+  #map-container {
+    flex:1;border-radius:20px;overflow:hidden;
+    border:1px solid rgba(255,255,255,.12);
+    box-shadow:0 8px 32px rgba(0,0,0,.5);
+    position:relative;min-width:0;
   }
-  .map-form input::placeholder{color:var(--text3);}
-  .map-form input:focus{outline:none;border-color:rgba(232,121,154,.4);}
-  .map-hint{font-size:12px;color:var(--text3);margin-bottom:14px;}
+  #map { height:440px; }
+  .leaflet-container { background:#0d0a14; font-family:'Nunito',sans-serif; }
+  .leaflet-popup-content-wrapper {
+    background:rgba(25,12,22,0.95)!important;
+    backdrop-filter:blur(20px)!important;
+    border:1px solid rgba(255,150,200,.25)!important;
+    border-radius:16px!important;
+    box-shadow:0 8px 32px rgba(0,0,0,.6)!important;
+    color:#fff!important;
+    padding:0!important;
+  }
+  .leaflet-popup-content { margin:14px 18px!important;color:#fff!important; }
+  .leaflet-popup-tip { background:rgba(25,12,22,0.95)!important; }
+  .leaflet-popup-close-button { color:rgba(255,255,255,.5)!important;top:8px!important;right:10px!important; }
+
+  /* Map sidebar */
+  #map-sidebar {
+    width:220px;flex-shrink:0;display:flex;flex-direction:column;gap:8px;
+  }
+  .map-place-card {
+    background:rgba(255,255,255,.07);
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:14px;padding:12px 14px;
+    cursor:pointer;transition:all .2s;
+    animation:fadeUp .25s ease;
+  }
+  .map-place-card:hover {
+    background:rgba(255,255,255,.12);
+    border-color:rgba(232,121,154,.3);
+    transform:translateX(-2px);
+  }
+  .map-place-card .mpc-name { font-size:13px;color:#fff;font-weight:600;margin-bottom:3px; }
+  .map-place-card .mpc-note { font-size:11px;color:var(--text3);line-height:1.4; }
+  .map-place-card .mpc-del {
+    background:none;border:none;color:rgba(255,255,255,.2);
+    cursor:pointer;font-size:14px;float:right;margin-top:-2px;
+    transition:color .2s;line-height:1;padding:0;
+  }
+  .map-place-card .mpc-del:hover { color:var(--red); }
+
+  /* Add location popup (floating over map) */
+  #map-add-panel {
+    display:none;
+    position:absolute;bottom:16px;left:50%;transform:translateX(-50%);
+    z-index:1000;width:calc(100% - 32px);max-width:380px;
+    background:rgba(20,10,18,0.92);
+    backdrop-filter:blur(20px);
+    border:1px solid rgba(255,150,200,.25);
+    border-radius:18px;padding:16px 18px;
+    box-shadow:0 8px 32px rgba(0,0,0,.6);
+    animation:fadeUp .2s ease;
+  }
+  #map-add-panel .panel-title { font-size:12px;color:var(--pink2);font-weight:700;letter-spacing:.5px;margin-bottom:10px; }
+  #map-add-panel input {
+    width:100%;background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.12);border-radius:10px;
+    color:#fff;font-family:'Nunito',sans-serif;font-size:13px;
+    padding:9px 13px;margin-bottom:8px;transition:all .2s;
+  }
+  #map-add-panel input:focus { outline:none;border-color:rgba(232,121,154,.45); }
+  #map-add-panel input::placeholder { color:rgba(255,255,255,.3); }
+  #map-add-panel .panel-btns { display:flex;gap:8px; }
+  #map-add-panel .btn-save {
+    flex:1;background:var(--accent-grad);border:none;border-radius:10px;
+    color:#fff;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;
+    padding:9px;cursor:pointer;transition:all .2s;
+  }
+  #map-add-panel .btn-save:hover { opacity:.85; }
+  #map-add-panel .btn-cancel {
+    background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);
+    border-radius:10px;color:rgba(255,255,255,.5);
+    font-family:'Nunito',sans-serif;font-size:13px;
+    padding:9px 14px;cursor:pointer;transition:all .2s;
+  }
+
+  .map-hint {
+    font-size:12px;color:var(--text3);margin-bottom:12px;
+    display:flex;align-items:center;gap:6px;
+  }
+  .map-stats {
+    display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;
+  }
+  .map-stat-chip {
+    background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);
+    border-radius:10px;padding:6px 12px;font-size:12px;color:var(--text2);
+  }
+  .map-stat-chip span { color:var(--pink2);font-weight:700; }
+
+  @media(max-width:640px){
+    #map-wrap { flex-direction:column; }
+    #map-sidebar { width:100%; }
+    #map { height:300px; }
+  }
 
   .save-btn {
     background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.11);
@@ -738,14 +826,29 @@
     <!-- BẢN ĐỒ -->
     <div class="tab-content" id="tab-bandо">
       <div class="section-title">Bản đồ kỷ niệm <small>những nơi hai đứa đã đi</small></div>
-      <p class="map-hint">👆 Click vào bản đồ để ghim địa điểm</p>
-      <div class="map-form">
-        <input type="text" id="map-place-name" placeholder="tên địa điểm..." style="flex:1">
-        <input type="text" id="map-place-note" placeholder="ghi chú..." style="flex:1">
-        <button class="btn-add" id="map-add-btn" onclick="confirmMapPlace()" style="display:none">Lưu</button>
+      <div class="map-stats">
+        <div class="map-stat-chip">📍 <span id="map-count">0</span> địa điểm</div>
+        <div class="map-stat-chip">💡 Click vào bản đồ để ghim</div>
       </div>
-      <div id="map-container"><div id="map"></div></div>
-      <div id="map-places-list"></div>
+      <div id="map-wrap">
+        <div id="map-container" style="position:relative">
+          <div id="map"></div>
+          <!-- Floating add panel -->
+          <div id="map-add-panel">
+            <div class="panel-title">📍 Ghim địa điểm mới</div>
+            <input type="text" id="map-place-name" placeholder="Tên địa điểm...">
+            <input type="text" id="map-place-note" placeholder="Ghi chú (tuỳ chọn)...">
+            <div class="panel-btns">
+              <button class="btn-cancel" onclick="cancelMapPlace()">Huỷ</button>
+              <button class="btn-save" onclick="confirmMapPlace()">💾 Lưu lại</button>
+            </div>
+          </div>
+        </div>
+        <div id="map-sidebar">
+          <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);font-weight:700;margin-bottom:4px;padding:0 2px">Địa điểm đã ghim</div>
+          <div id="map-places-list"></div>
+        </div>
+      </div>
     </div>
 
     <!-- HẸN HÒ -->
@@ -1161,15 +1264,48 @@ window.deleteNote=async(id)=>{await deleteDoc(doc(db,'users',uid,'notes',id));lo
 // ── MAP ──────────────────────────────────────────────
 function initMap(){
   if(mapInstance)return;
-  mapInstance=L.map('map').setView([21.028,105.834],12);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OSM'}).addTo(mapInstance);
+  mapInstance=L.map('map',{zoomControl:false}).setView([21.028,105.834],12);
+
+  // Dark tile từ CartoDB
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{
+    attribution:'© CartoDB',maxZoom:19
+  }).addTo(mapInstance);
+
+  // Zoom control góc phải dưới
+  L.control.zoom({position:'bottomright'}).addTo(mapInstance);
+
   mapInstance.on('click',function(e){
     pendingLatLng=e.latlng;
-    document.getElementById('map-add-btn').style.display='block';
-    document.getElementById('map-place-name').focus();
+    // Hiện floating panel
+    document.getElementById('map-add-panel').style.display='block';
+    document.getElementById('map-place-name').value='';
+    document.getElementById('map-place-note').value='';
+    setTimeout(()=>document.getElementById('map-place-name').focus(),100);
+    // Đặt preview marker tạm
+    if(window._previewMarker) window._previewMarker.remove();
+    window._previewMarker = L.marker(e.latlng,{icon:heartIcon(true)}).addTo(mapInstance);
   });
+
   loadMapPlaces();
 }
+
+function heartIcon(preview=false){
+  return L.divIcon({
+    className:'',
+    html:`<div style="
+      width:32px;height:32px;
+      background:${preview?'rgba(232,121,154,.5)':'linear-gradient(135deg,#e8799a,#c9a8e8)'};
+      border:2px solid ${preview?'rgba(255,255,255,.4)':'rgba(255,255,255,.7)'};
+      border-radius:50% 50% 50% 0;
+      transform:rotate(-45deg);
+      box-shadow:0 4px 12px rgba(232,121,154,.5);
+      display:flex;align-items:center;justify-content:center;
+      transition:all .2s;
+    "><span style="transform:rotate(45deg);font-size:13px;line-height:1">${preview?'?':'📍'}</span></div>`,
+    iconSize:[32,32],iconAnchor:[16,32],popupAnchor:[0,-36]
+  });
+}
+
 async function loadMapPlaces(){
   if(!uid)return;
   try{
@@ -1178,26 +1314,83 @@ async function loadMapPlaces(){
     renderMapPlaces(places);
   }catch(e){}
 }
+
 function renderMapPlaces(places){
   if(!mapInstance)return;
   mapMarkers.forEach(m=>m.remove());mapMarkers=[];
-  const el=document.getElementById('map-places-list');
-  if(!places.length){el.innerHTML='<div class="empty">click vào bản đồ để thêm địa điểm kỷ niệm 📍</div>';return;}
-  places.forEach(p=>{
-    const marker=L.marker([p.lat,p.lng]).addTo(mapInstance).bindPopup(`<b>${p.name}</b>${p.note?`<br>${p.note}`:''}`);
+
+  // Update count
+  document.getElementById('map-count').textContent=places.length;
+
+  const sidebar=document.getElementById('map-places-list');
+  if(!places.length){
+    sidebar.innerHTML='<div style="font-size:12px;color:var(--text3);font-style:italic;padding:10px 2px">Chưa có địa điểm nào... click vào bản đồ để thêm 🗺️</div>';
+    return;
+  }
+
+  places.forEach((p,i)=>{
+    const marker=L.marker([p.lat,p.lng],{icon:heartIcon()}).addTo(mapInstance);
+    marker.bindPopup(`
+      <div style="min-width:140px">
+        <div style="font-weight:700;font-size:14px;margin-bottom:4px">${p.name}</div>
+        ${p.note?`<div style="font-size:12px;color:rgba(255,200,220,.8)">${p.note}</div>`:''}
+      </div>
+    `);
+    marker.on('click',()=>{
+      // highlight card
+      document.querySelectorAll('.map-place-card').forEach(c=>c.style.borderColor='');
+      const card=document.querySelector(`.map-place-card[data-id="${p.id}"]`);
+      if(card){card.style.borderColor='rgba(232,121,154,.6)';card.scrollIntoView({behavior:'smooth',block:'nearest'});}
+    });
     mapMarkers.push(marker);
   });
-  el.innerHTML='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:16px">'+
-    places.map(p=>`<div class="card"><div style="flex:1"><div class="card-text">📍 ${p.name}</div>${p.note?`<div class="card-sub">${p.note}</div>`:''}</div><button class="card-delete" onclick="deleteMapPlace('${p.id}')">×</button></div>`).join('')+'</div>';
+
+  // Fit map to all markers
+  if(places.length>0){
+    const group=L.featureGroup(mapMarkers);
+    mapInstance.fitBounds(group.getBounds().pad(0.2),{maxZoom:14});
+  }
+
+  // Render sidebar
+  sidebar.innerHTML=places.map(p=>`
+    <div class="map-place-card" data-id="${p.id}" onclick="flyToPlace(${p.lat},${p.lng},'${p.id}')">
+      <button class="mpc-del" onclick="event.stopPropagation();deleteMapPlace('${p.id}')">×</button>
+      <div class="mpc-name">📍 ${p.name}</div>
+      ${p.note?`<div class="mpc-note">${p.note}</div>`:''}
+    </div>
+  `).join('');
 }
+
+window.flyToPlace=(lat,lng,id)=>{
+  mapInstance.flyTo([lat,lng],15,{duration:1.2});
+  // Tìm marker và mở popup
+  mapMarkers.forEach(m=>{
+    if(Math.abs(m.getLatLng().lat-lat)<0.0001&&Math.abs(m.getLatLng().lng-lng)<0.0001){
+      setTimeout(()=>m.openPopup(),800);
+    }
+  });
+  // Highlight card
+  document.querySelectorAll('.map-place-card').forEach(c=>c.style.borderColor='');
+  const card=document.querySelector(`.map-place-card[data-id="${id}"]`);
+  if(card) card.style.borderColor='rgba(232,121,154,.6)';
+};
+
+window.cancelMapPlace=()=>{
+  document.getElementById('map-add-panel').style.display='none';
+  if(window._previewMarker){window._previewMarker.remove();window._previewMarker=null;}
+  pendingLatLng=null;
+};
+
 window.confirmMapPlace=async()=>{
   if(!pendingLatLng)return;
-  const name=document.getElementById('map-place-name').value.trim();if(!name)return;
+  const name=document.getElementById('map-place-name').value.trim();
+  if(!name)return;
   const note=document.getElementById('map-place-note').value.trim();
   await addDoc(ucol('mapplaces'),{name,note,lat:pendingLatLng.lat,lng:pendingLatLng.lng,createdAt:Date.now()});
-  document.getElementById('map-place-name').value='';document.getElementById('map-place-note').value='';
-  document.getElementById('map-add-btn').style.display='none';
-  pendingLatLng=null;loadMapPlaces();
+  document.getElementById('map-add-panel').style.display='none';
+  if(window._previewMarker){window._previewMarker.remove();window._previewMarker=null;}
+  pendingLatLng=null;
+  loadMapPlaces();
 };
 window.deleteMapPlace=async(id)=>{await deleteDoc(doc(db,'users',uid,'mapplaces',id));loadMapPlaces();};
 
