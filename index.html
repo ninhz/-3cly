@@ -13,35 +13,55 @@
     --lavender:#e8d5f5;--lavender2:#c9a8e8;
     --peach:#fde8d8;--peach2:#f5c4a0;
     --bg-from:#1a0d14;--bg-mid:#160d1f;--bg-to:#0d1018;
-    --glass:rgba(255,255,255,0.07);--glass-border:rgba(255,255,255,0.13);
-    --glass-hover:rgba(255,255,255,0.11);
-    --text:#fdf0f4;--text2:#e0c8d4;--text3:#a08898;
+    --glass:rgba(255,255,255,0.09);--glass-border:rgba(255,255,255,0.16);
+    --glass-hover:rgba(255,255,255,0.13);
+    --text:#ffffff;--text2:#f0dde6;--text3:#c0a0b0;
     --red:#e05575;--green:#8fd4b0;
     --shadow:0 8px 32px rgba(0,0,0,.4);
     --shadow-sm:0 4px 16px rgba(0,0,0,.25);
+    --accent-grad: linear-gradient(135deg,#e8799a,#c9a8e8);
+    --bg-overlay: rgba(0,0,0,0.45);
   }
+  /* ── THEMES ── */
+  body.theme-sakura { --bg-from:#1a0d14;--bg-mid:#160d1f;--bg-to:#0d1018; }
+  body.theme-midnight { --bg-from:#060612;--bg-mid:#0d0d24;--bg-to:#12081a;--pink2:#b8a0f8;--pink3:#9b7ef5;--lavender2:#c9a8e8;--accent-grad:linear-gradient(135deg,#9b7ef5,#c9a8e8); }
+  body.theme-forest { --bg-from:#071410;--bg-mid:#0d1f16;--bg-to:#071812;--pink2:#7fd4a0;--pink3:#5bbf88;--lavender2:#a8e8c9;--accent-grad:linear-gradient(135deg,#5bbf88,#a8e8c9); }
+  body.theme-sunset { --bg-from:#1a0d00;--bg-mid:#1f1208;--bg-to:#180808;--pink2:#f5b07a;--pink3:#e88550;--lavender2:#f5c9a0;--accent-grad:linear-gradient(135deg,#e88550,#f5c9a0); }
+  body.theme-ocean { --bg-from:#050d1a;--bg-mid:#08101f;--bg-to:#060e18;--pink2:#7ab8f5;--pink3:#4a9fe8;--lavender2:#a0c8f5;--accent-grad:linear-gradient(135deg,#4a9fe8,#a0c8f5); }
+  /* custom wallpaper */
+  body.theme-custom { --bg-from:transparent;--bg-mid:transparent;--bg-to:transparent; }
   *{box-sizing:border-box;margin:0;padding:0;}
 
-  body {
+  #wallpaper-layer {
+    position:fixed;inset:0;z-index:0;
     background: linear-gradient(135deg, var(--bg-from) 0%, var(--bg-mid) 50%, var(--bg-to) 100%);
-    background-attachment: fixed;
+    background-size:cover;background-position:center;
+    transition:opacity .4s;
+  }
+  #wallpaper-layer.has-img {
+    background-size:cover!important;background-position:center!important;
+  }
+  #wallpaper-overlay {
+    position:fixed;inset:0;z-index:0;
+    background: var(--bg-overlay);
+    pointer-events:none;
+  }
+  #wallpaper-blobs {
+    position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(ellipse at 15% 20%, rgba(232,121,154,.22) 0%, transparent 45%),
+      radial-gradient(ellipse at 85% 10%, rgba(201,168,232,.18) 0%, transparent 40%),
+      radial-gradient(ellipse at 50% 80%, rgba(243,160,184,.12) 0%, transparent 50%),
+      radial-gradient(ellipse at 90% 90%, rgba(169,168,232,.10) 0%, transparent 35%);
+  }
+  body {
     color: var(--text);
     font-family: 'Nunito', sans-serif;
     font-weight: 400;
     min-height: 100vh;
     position: relative;
   }
-  body::before {
-    content:'';
-    position:fixed;inset:0;
-    background:
-      radial-gradient(ellipse at 15% 20%, rgba(232,121,154,.18) 0%, transparent 45%),
-      radial-gradient(ellipse at 85% 10%, rgba(201,168,232,.14) 0%, transparent 40%),
-      radial-gradient(ellipse at 50% 80%, rgba(243,160,184,.10) 0%, transparent 50%),
-      radial-gradient(ellipse at 90% 90%, rgba(169,168,232,.08) 0%, transparent 35%);
-    pointer-events:none;z-index:0;
-  }
-  body > * { position: relative; z-index:1; }
+  body > *:not(#wallpaper-layer):not(#wallpaper-overlay):not(#wallpaper-blobs) { position: relative; z-index:1; }
 
   /* ── SCROLLBAR ── */
   ::-webkit-scrollbar{width:4px;}
@@ -174,10 +194,10 @@
   .header-titles h1 {
     font-family:'Playfair Display',serif;font-size:26px;font-weight:400;
     line-height:1.1;outline:none;cursor:text;
-    background:linear-gradient(135deg,#fff 0%,var(--pink1) 100%);
-    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    color: #ffffff;
+    text-shadow: 0 1px 8px rgba(0,0,0,.6), 0 0 20px rgba(232,121,154,.3);
   }
-  .header-titles h1 span { font-style:italic; }
+  .header-titles h1 span { font-style:italic; color: var(--pink2); }
   .header-titles p { margin-top:3px;color:var(--text3);font-size:12px;outline:none;cursor:text; }
 
   .header-right { display:flex;align-items:center;gap:10px; }
@@ -189,8 +209,7 @@
   }
   .anniv-badge .days {
     font-family:'Playfair Display',serif;font-size:26px;line-height:1;
-    background:linear-gradient(135deg,var(--pink1),var(--lavender));
-    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    color:#fff;text-shadow:0 0 12px rgba(232,121,154,.5);
   }
   .anniv-badge .label { font-size:10px;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin-top:2px; }
   .anniv-badge .date-input {
@@ -252,10 +271,12 @@
   .section-title {
     font-family:'Playfair Display',serif;font-size:22px;font-weight:400;
     margin-bottom:20px;display:flex;align-items:baseline;gap:10px;
+    color:#ffffff;
+    text-shadow:0 1px 6px rgba(0,0,0,.5);
   }
   .section-title small {
     font-family:'Nunito',sans-serif;font-size:12px;
-    color:var(--text3);font-weight:400;
+    color:var(--text3);font-weight:400;text-shadow:none;
   }
 
   /* ── ADD FORM ── */
@@ -356,8 +377,7 @@
   .period-stat{display:flex;flex-direction:column;gap:4px;}
   .period-stat .num{
     font-family:'Playfair Display',serif;font-size:28px;line-height:1;
-    background:linear-gradient(135deg,var(--pink1),var(--lavender));
-    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    color:#fff;text-shadow:0 0 14px rgba(232,121,154,.45);
   }
   .period-stat .desc{font-size:11px;color:var(--text3);}
   .period-alert{margin-top:14px;padding:12px 16px;border-radius:14px;font-size:13px;line-height:1.5;}
@@ -381,8 +401,7 @@
   .note-entry:hover{background:rgba(255,255,255,.09);}
   .note-entry-title{
     font-family:'Playfair Display',serif;font-size:15px;
-    background:linear-gradient(135deg,var(--pink1),var(--lavender2));
-    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.4);
   }
   .note-entry-date{font-size:11px;color:var(--text3);margin-top:3px;}
   .note-entry-body{font-size:14px;color:var(--text2);line-height:1.7;white-space:pre-wrap;margin-top:10px;}
@@ -402,8 +421,7 @@
   }
   .milestone-days .md-num{
     font-family:'Playfair Display',serif;font-size:22px;line-height:1;
-    background:linear-gradient(135deg,var(--pink1),var(--lavender));
-    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    color:#fff;text-shadow:0 0 10px rgba(232,121,154,.4);
   }
   .milestone-days .md-label{font-size:10px;color:var(--text3);letter-spacing:.5px;}
   .milestone-info .mi-name{font-size:14px;color:var(--text);}
@@ -469,11 +487,9 @@
 <body>
 
 <!-- Petals -->
-<div class="petal" style="left:8%;animation-duration:12s;animation-delay:0s;top:-20px">🌸</div>
-<div class="petal" style="left:22%;animation-duration:15s;animation-delay:3s;top:-20px">🌷</div>
-<div class="petal" style="left:45%;animation-duration:11s;animation-delay:6s;top:-20px">✿</div>
-<div class="petal" style="left:68%;animation-duration:14s;animation-delay:1s;top:-20px">🌸</div>
-<div class="petal" style="left:85%;animation-duration:13s;animation-delay:8s;top:-20px">🌺</div>
+<div id="wallpaper-layer"></div>
+<div id="wallpaper-overlay"></div>
+<div id="wallpaper-blobs"></div>
 
 <!-- ════ AUTH ════ -->
 <div id="auth-screen">
@@ -519,6 +535,7 @@
         <div class="label">ngày bên nhau</div>
         <input type="date" id="anniv-date" class="date-input" onchange="saveAnniv()">
       </div>
+      <button class="logout-btn" onclick="openTheme()" style="font-size:16px;padding:8px 12px" title="Đổi theme">🎨</button>
       <button class="logout-btn" onclick="doLogout()">Đăng xuất</button>
     </div>
   </header>
@@ -687,7 +704,60 @@
   </main>
 </div>
 
-<script type="module">
+<!-- THEME MODAL -->
+<div id="theme-modal" style="display:none;position:fixed;inset:0;z-index:200;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);">
+  <div style="background:rgba(30,15,25,0.95);border:1px solid rgba(255,255,255,.15);border-radius:24px;padding:32px;max-width:420px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,.7);">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
+      <div style="font-family:'Playfair Display',serif;font-size:20px;color:#fff">🎨 Đổi giao diện</div>
+      <button onclick="closeTheme()" style="background:none;border:none;color:rgba(255,255,255,.5);font-size:22px;cursor:pointer;line-height:1">×</button>
+    </div>
+    <!-- PRESET THEMES -->
+    <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:12px;font-weight:600">Màu sắc</div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:24px">
+      <div class="theme-opt" data-theme="sakura" onclick="setTheme('sakura')" title="Sakura">
+        <div style="width:100%;aspect-ratio:1;border-radius:14px;background:linear-gradient(135deg,#1a0d14,#9b4f6a);border:2px solid rgba(255,255,255,.1)"></div>
+        <div style="font-size:10px;color:rgba(255,255,255,.6);text-align:center;margin-top:5px">Sakura</div>
+      </div>
+      <div class="theme-opt" data-theme="midnight" onclick="setTheme('midnight')" title="Midnight">
+        <div style="width:100%;aspect-ratio:1;border-radius:14px;background:linear-gradient(135deg,#060612,#3d2a6b);border:2px solid rgba(255,255,255,.1)"></div>
+        <div style="font-size:10px;color:rgba(255,255,255,.6);text-align:center;margin-top:5px">Midnight</div>
+      </div>
+      <div class="theme-opt" data-theme="forest" onclick="setTheme('forest')" title="Forest">
+        <div style="width:100%;aspect-ratio:1;border-radius:14px;background:linear-gradient(135deg,#071410,#1a5e38);border:2px solid rgba(255,255,255,.1)"></div>
+        <div style="font-size:10px;color:rgba(255,255,255,.6);text-align:center;margin-top:5px">Forest</div>
+      </div>
+      <div class="theme-opt" data-theme="sunset" onclick="setTheme('sunset')" title="Sunset">
+        <div style="width:100%;aspect-ratio:1;border-radius:14px;background:linear-gradient(135deg,#1a0d00,#7a3010);border:2px solid rgba(255,255,255,.1)"></div>
+        <div style="font-size:10px;color:rgba(255,255,255,.6);text-align:center;margin-top:5px">Sunset</div>
+      </div>
+      <div class="theme-opt" data-theme="ocean" onclick="setTheme('ocean')" title="Ocean">
+        <div style="width:100%;aspect-ratio:1;border-radius:14px;background:linear-gradient(135deg,#050d1a,#0a3a6e);border:2px solid rgba(255,255,255,.1)"></div>
+        <div style="font-size:10px;color:rgba(255,255,255,.6);text-align:center;margin-top:5px">Ocean</div>
+      </div>
+    </div>
+    <!-- WALLPAPER -->
+    <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:12px;font-weight:600">Hình nền</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <label style="flex:1;min-width:120px;background:rgba(255,255,255,.07);border:1px dashed rgba(255,255,255,.2);border-radius:14px;padding:14px;text-align:center;cursor:pointer;transition:all .2s;color:rgba(255,255,255,.6);font-size:13px;" onmouseover="this.style.background='rgba(255,255,255,.12)'" onmouseout="this.style.background='rgba(255,255,255,.07)'">
+        📁 Tải ảnh lên
+        <input type="file" accept="image/*" style="display:none" onchange="setWallpaper(this)">
+      </label>
+      <button onclick="removeWallpaper()" style="flex:1;min-width:120px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:14px;color:rgba(255,255,255,.6);font-size:13px;cursor:pointer;transition:all .2s;font-family:'Nunito',sans-serif;" onmouseover="this.style.background='rgba(255,255,255,.12)'" onmouseout="this.style.background='rgba(255,255,255,.07)'">🗑 Xoá hình nền</button>
+    </div>
+    <!-- BLUR OVERLAY SLIDER -->
+    <div style="margin-top:20px">
+      <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:10px;font-weight:600">Độ mờ overlay <span id="overlay-val">45</span>%</div>
+      <input type="range" id="overlay-slider" min="0" max="80" value="45" oninput="setOverlay(this.value)"
+        style="width:100%;accent-color:var(--pink3);height:4px;border-radius:4px;cursor:pointer">
+    </div>
+  </div>
+</div>
+
+<style>
+.theme-opt { cursor:pointer; transition:transform .15s; }
+.theme-opt:hover > div:first-child { border-color:rgba(255,255,255,.5)!important; transform:scale(1.05); }
+.theme-opt.active > div:first-child { border-color:#fff!important; box-shadow:0 0 0 2px rgba(255,255,255,.3); }
+</style>
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc, collection, addDoc, getDocs, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
@@ -1066,6 +1136,79 @@ window.switchTab=(name,btn)=>{
   if(btn)btn.classList.add('active');
   if(name==='bandо'&&mapInstance) setTimeout(()=>mapInstance.invalidateSize(),100);
 };
+
+// ── THEME ─────────────────────────────────────────────
+const THEMES = ['sakura','midnight','forest','sunset','ocean'];
+function applyTheme(theme){
+  document.body.className = document.body.className.replace(/theme-\S+/g,'').trim();
+  document.body.classList.add('theme-'+theme);
+  document.querySelectorAll('.theme-opt').forEach(el=>{
+    el.classList.toggle('active', el.dataset.theme===theme);
+  });
+}
+function applyWallpaperImg(dataUrl, overlayVal){
+  const layer = document.getElementById('wallpaper-layer');
+  layer.style.backgroundImage = dataUrl ? `url(${dataUrl})` : '';
+  layer.style.backgroundSize = 'cover';
+  layer.style.backgroundPosition = 'center';
+  layer.style.backgroundRepeat = 'no-repeat';
+  // when custom image, hide gradient blobs a bit
+  document.getElementById('wallpaper-blobs').style.opacity = dataUrl ? '0.4' : '1';
+}
+function applyOverlay(val){
+  document.documentElement.style.setProperty('--bg-overlay', `rgba(0,0,0,${val/100})`);
+}
+// Load saved theme/wallpaper from localStorage
+(function initTheme(){
+  const saved = localStorage.getItem('inlove_theme') || 'sakura';
+  applyTheme(saved);
+  const wallpaper = localStorage.getItem('inlove_wallpaper');
+  if(wallpaper) applyWallpaperImg(wallpaper);
+  const overlay = localStorage.getItem('inlove_overlay') || '45';
+  applyOverlay(overlay);
+  const slider = document.getElementById('overlay-slider');
+  if(slider){ slider.value = overlay; document.getElementById('overlay-val').textContent = overlay; }
+})();
+
+window.openTheme = ()=>{
+  const m = document.getElementById('theme-modal');
+  m.style.display='flex';
+  // sync active state
+  const saved = localStorage.getItem('inlove_theme') || 'sakura';
+  document.querySelectorAll('.theme-opt').forEach(el=>el.classList.toggle('active',el.dataset.theme===saved));
+};
+window.closeTheme = ()=>{ document.getElementById('theme-modal').style.display='none'; };
+window.setTheme = (theme)=>{
+  applyTheme(theme);
+  localStorage.setItem('inlove_theme', theme);
+  // update wallpaper layer gradient to match theme if no custom image
+  if(!localStorage.getItem('inlove_wallpaper')){
+    document.getElementById('wallpaper-layer').style.backgroundImage='';
+  }
+};
+window.setWallpaper = (input)=>{
+  const file = input.files[0]; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e=>{
+    const dataUrl = e.target.result;
+    localStorage.setItem('inlove_wallpaper', dataUrl);
+    applyWallpaperImg(dataUrl);
+  };
+  reader.readAsDataURL(file);
+};
+window.removeWallpaper = ()=>{
+  localStorage.removeItem('inlove_wallpaper');
+  applyWallpaperImg('');
+};
+window.setOverlay = (val)=>{
+  applyOverlay(val);
+  localStorage.setItem('inlove_overlay', val);
+  document.getElementById('overlay-val').textContent = val;
+};
+// close modal on backdrop click
+document.getElementById('theme-modal').addEventListener('click', function(e){
+  if(e.target===this) closeTheme();
+});
 </script>
 </body>
 </html>
