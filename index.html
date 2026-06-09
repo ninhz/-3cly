@@ -104,10 +104,10 @@
   }
   .auth-box h1 {
     font-family:'Playfair Display',serif;font-size:34px;font-weight:400;margin-bottom:6px;
-    background: linear-gradient(135deg, var(--pink1), var(--lavender));
-    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    color: #ffffff;
+    text-shadow: 0 0 20px rgba(232,121,154,.5);
   }
-  .auth-box h1 em { font-style:italic; }
+  .auth-box h1 em { font-style:italic; color: var(--pink2); }
   .auth-box p { color:var(--text3);font-size:13px;margin-bottom:28px; }
 
   .auth-tabs {
@@ -758,6 +758,7 @@
 .theme-opt:hover > div:first-child { border-color:rgba(255,255,255,.5)!important; transform:scale(1.05); }
 .theme-opt.active > div:first-child { border-color:#fff!important; box-shadow:0 0 0 2px rgba(255,255,255,.3); }
 </style>
+<script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc, collection, addDoc, getDocs, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
